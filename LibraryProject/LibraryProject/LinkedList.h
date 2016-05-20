@@ -1,13 +1,34 @@
-//
-//  LinkedList.h
-//  LibraryProject
-//
-//  Created by Chris M on 5/17/16.
-//  Copyright © 2016 Chris McPherson. All rights reserved.
-//
 
-#ifndef LinkedList_h
-#define LinkedList_h
+struct Node
+{
+    void* data_;
+    Node* next_;
+    Node* prev_;
+    
+    Node()
+    {
+        data_ = 0;
+        prev_ = 0;
+        next_ = 0;
+    }
+};
 
+class LinkedList
+{
+private:
+    Node* first_;
+    Node* last_;
+    Node* curNode_;
+    long listLen_;
+    
+public:
+    LinkedList();
+    ~LinkedList();
+    void AddLinkToBack(void* ptr);
+    void* RemoveThisLink(Node* node);
+    void* RemoveLinkFromFront();
+    void* GetFirstNode();
+    void* GetNextNode();
+    long GetListLength();
+};
 
-#endif /* LinkedList_h */
