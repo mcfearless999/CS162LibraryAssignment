@@ -7,3 +7,7 @@
 //
 
 #include "Users.h"
+
+
+char Users::usersFileList_[512] = "";
+char Users::currentUser_[512] = "";
