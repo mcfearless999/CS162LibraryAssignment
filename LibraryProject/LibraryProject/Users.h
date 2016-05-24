@@ -1,7 +1,10 @@
 
-#include "Book.h" //I am not sure we need to include
+//#include "Book.h" //I am not sure we need to include
 #ifndef Users_h
 #define Users_h
+#include <iostream>
+
+using namespace std;
 
 class Users
 {
@@ -16,8 +19,8 @@ private:
     string login;
 public:
     //added static variables
-    static char userFileList[512];
-    static char currentUser[512];
+    static char usersFileList_[512];
+    static char currentUser_[512];
     
     Users();
 	Users(string firstName, string lastName, int ID, string checkout);

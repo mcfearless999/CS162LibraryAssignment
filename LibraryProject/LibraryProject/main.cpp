@@ -15,18 +15,23 @@
 using namespace std;
 
 char printMenu();
+bool cancelCheck(string);
+void getBookFileName(string defaultBook);
+void getUsersFileName(string defaultUsers);
 
-
-
-int main(int argc, const char * argv[]) {
+int main() {
+    
     string currentUser;
     char selection = ' ';
-    //loadFile(Book)
-    //loadFile(Users)
-    //currentUser = LoginMenu();
-    //if (currentUser == "XXX") return 0;
-    //
+    string defaultBook = "bookList.txt";
+    string defaultUsers = "usersList.txt";
     
+    getBookFileName(defaultBook);
+    //loadFile(defaultUsers)
+    //currentUser = LoginMenu();
+    //if (cancelCheck(currentUser) == false) return 0;
+    //
+    printMenu();
     for (;;)
     {
         if (selection == 'a')
@@ -85,7 +90,63 @@ char printMenu()
     cout << " -> ";
     
     cin >> choice;
-    
     return choice;
 }
+
+bool cancelCheck(string input)
+{
+    bool cancel = false;
+    if (input == "XXX") cancel = true;
+    return cancel;
+    
+        
+}
+
+void getBookFileName(string BookName){
+    char* fileName;
+    fileName = new char[256]; //new*
+    fstream file;
+    
+    cout << "Input Book list file name?";
+    
+    cin.clear();
+    cin.ignore(1);
+    cin.get(fileName, 256, '\n');
+    file.open(BookName.c_str(),ios_base::in) ;
+    while (file.good() != true)
+    {
+        cout << "?unable to open file, please enter a valid file name" << endl;
+        cin.clear();
+        cin.ignore(1);
+        cin.get(fileName,256, '\n'),
+        file.open(fileName,ios_base::in) ;
+    }
+    strcpy(Book::bookFileList_,fileName);
+    delete [] fileName;
+}
+
+void getUsersFileName(string UsersName){
+    char* fileName;
+    fileName = new char[256]; //new*
+    fstream file;
+    
+    cout << "Input Book list file name?";
+    
+    cin.clear();
+    cin.ignore(1);
+    cin.get(fileName, 256, '\n');
+    file.open(UsersName.c_str(),ios_base::in) ;
+    while (file.good() != true)
+    {
+        cout << "?unable to open file, please enter a valid file name" << endl;
+        cin.clear();
+        cin.ignore(1);
+        cin.get(fileName,256, '\n'),
+        file.open(fileName,ios_base::in) ;
+    }
+    strcpy(Users::usersFileList_,fileName);
+    delete [] fileName;
+}
+
+
 

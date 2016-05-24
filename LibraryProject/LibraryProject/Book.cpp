@@ -8,8 +8,8 @@
 
 using namespace std;
 
-static string bookFileList_;
-static string currentBook_;
+char Book::bookFileList_[512] = "";
+char Book::currentBook_[512] = "";
 
 Book::Book()
 {
@@ -81,6 +81,6 @@ void Book::PrintBook()
 void Book::AppendToBookFile()
 {
     ofstream outStream;
-    outStream.open(Book::bookFileList_,ios_base::app);
+    outStream.open(bookFileList_,ios_base::app);
     outStream << bookFileList_ << endl;
 }

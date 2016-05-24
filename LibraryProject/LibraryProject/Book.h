@@ -1,7 +1,8 @@
 
+#ifndef Book_h
+#define Book_h
 #include <iostream>
 #include <string>
-
 
 using namespace std;
 
@@ -15,8 +16,8 @@ private:
     string checkedOut_;
     
 public:
-    static string bookFileList_;
-    static string currentBook_;
+    static char bookFileList_[512];
+    static char currentBook_[512];
     
     Book();
     Book(string title, string auth, string pub, string id, string checkout);
@@ -37,3 +38,5 @@ public:
     void AppendToBookFile();
     
 };
+
+#endif /* Book_h */
