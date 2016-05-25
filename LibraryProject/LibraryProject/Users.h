@@ -3,6 +3,7 @@
 #ifndef Users_h
 #define Users_h
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -13,32 +14,33 @@ private:
 	string firstName_; 
 	string lastName_; 
     string email_;
-	int ID_; 
-	string checkOut;
+	string ID_; 
+	string checkOut_; 
     //we might want to have a login field as well
     string login;
 public:
     //added static variables
     static char usersFileList_[512];
     static char currentUser_[512];
-    
+    int checkOut[5]; 
     Users();
-	Users(string firstName, string lastName, int ID, string checkout);
+	Users(string firstName_, string lastName_, string ID_, string checkOut_);
 	void Register(); 
 	void LogOn(); 
 	void CheckOutBooks();
         void CheckInBooks(); 
 	void AlreadyCheckedOut();
 	
-	string GetUser();
+	string GetUserName();
     //I think we should have both first and last
 	string GetFirstName();
     string GetLastName();
-	int GetID(); 
-	string GetCheckOut(); 
+	string GetID(); 
+	string GetCheckOut();
+	string GetEmail();  
 	
 	void setFirstName(string firstName); 
 	void setLastName(string lastName); 
-	void setID(int ID); 
+	void setID(string ID); 
 };
 #endif /* Users_h */
