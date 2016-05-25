@@ -29,6 +29,7 @@ Users::Users(string firstName_, string lastName_, string ID_, string checkOut_)
 }
 string Users::GetUserName()
 {
+    return userName_;
 }
 string Users::GetFirstName()
 {

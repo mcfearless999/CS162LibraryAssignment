@@ -24,17 +24,19 @@ string login();
 char loginMenu();
 void getBookFileName(string defaultBook);
 void getUsersFileName(string defaultUsers);
-string getUserLogin();
+Node* getUserLogin();
+void welcome();
 
 
 int main() {
     
     string currentUser;
+    
     char selection = ' ';
-
+    
 
     currentUser = login();
-    //welcome(currentUser);
+    //welcome();
     //if (cancelCheck(currentUser) == true) return 0;
     
     printMenu();
@@ -104,7 +106,6 @@ string login()
 {
     string defaultBook = "bookList.txt";
     string defaultUsers = "usersList.txt";
-    
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
     string userLogin;
@@ -182,13 +183,19 @@ void getUsersFileName(string UsersName){
     delete [] fileName;
 }
 
-string getUserLogin()
+Node* getUserLogin()
 {
-    string user;
+    Node *  user;
     //prompt user for username
     //check login
-    //if matched return username
+    //if matched return Node*
     //set currentuser within the users object
     
     return user;
+}
+
+void welcome()
+{
+    cout << "Welcome " << "CurUser fname" << " " << "CurUser lname" << endl;
+    
 }

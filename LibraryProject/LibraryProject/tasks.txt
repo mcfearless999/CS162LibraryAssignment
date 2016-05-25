@@ -1,0 +1,27 @@
+display current checked out books
+
+unassigned:
+
+Stretch Goals
+assign username
+check username (for unique)
+assign dates to check out
+assign due dates
+assign fees
+
+Chris
+check in books
+check out books
+encoder/decoder for checkedOutlist
+
+UserCheck
+BookCheck
+
+
+Marcel
+login
+registration
+load file function
+print all books
+change users
+display current checked out books

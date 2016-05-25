@@ -17,7 +17,7 @@ private:
 	string ID_; 
 	string checkOut_; 
     //we might want to have a login field as well
-    string login;
+    string userName_;
 public:
     //added static variables
     static char usersFileList_[512];
