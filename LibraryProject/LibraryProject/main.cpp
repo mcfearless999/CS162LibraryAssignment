@@ -34,6 +34,7 @@ int main() {
 
 
     currentUser = login();
+    //welcome(currentUser);
     //if (cancelCheck(currentUser) == true) return 0;
     
     printMenu();
@@ -41,13 +42,13 @@ int main() {
     {
         if (selection == 'a')
         {
-
+            //print book list
             
             selection = ' ';
         }
         if (selection == 'b')
         {
-
+            //check out book
 
             selection = ' ';
         }
@@ -58,11 +59,11 @@ int main() {
         }
         if (selection == 'd')
         {
-
+            
             selection = ' ';
         }
         if (selection == 'e'){
-
+            //change user
 
             selection = ' ';
             
