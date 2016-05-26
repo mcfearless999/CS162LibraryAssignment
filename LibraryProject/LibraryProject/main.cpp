@@ -25,7 +25,7 @@ char loginMenu();
 void getBookFileName(string defaultBook);
 void getUsersFileName(string defaultUsers);
 string getUserLogin();
-
+void Register(string data[]);
 
 int main() {
     
@@ -192,3 +192,26 @@ string getUserLogin()
     
     return user;
 }
+void Register(string data[])
+{
+   
+ 	Users User;
+	string fname; 
+	string lname; 
+	string email; 
+	string id;  
+ 	cout << "Enter your First Name: " << endl; 
+	cin >> fname; 
+ 	User.setFirstName(fname); 
+        cout << "Enter your Last Name: " << endl; 
+	cin >> lname; 
+	User.setLastName(lname); 
+	cout << "Enter your email: " << endl; 
+	cin >> email; 
+	User.setEmail(email);
+      
+	
+
+ 
+}
+
