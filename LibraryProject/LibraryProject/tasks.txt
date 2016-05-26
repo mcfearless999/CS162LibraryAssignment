@@ -10,9 +10,9 @@ assign due dates
 assign fees
 
 Chris
-check in books
+check in books 
 check out books
-encoder/decoder for checkedOutlist
+encoder/decoder for checkedOutlist X
 
 UserCheck
 BookCheck

@@ -25,7 +25,7 @@ char loginMenu();
 void getBookFileName(string defaultBook);
 void getUsersFileName(string defaultUsers);
 string getUserLogin();
-void welcome();
+void welcome(string username);
 Users* getCurUser();
 void checkOutDecode(string checkOutString, string checkarr[]);
 string getBookTitle(int bookID);
@@ -282,6 +282,7 @@ string getBookTitle(int bookID)
     
     return title;
 }
+//load the username into currentUser
 void Register(string data[])
 {
    
