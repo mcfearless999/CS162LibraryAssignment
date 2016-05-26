@@ -24,6 +24,7 @@ Users::Users()
 	checkOut[idx]=0;
 	} 
 }
+
 Users::Users(string firstName_, string lastName_, string ID_, string checkOut_)
 {
 }
@@ -31,6 +32,9 @@ string Users::GetUserName()
 {
     return userName_;
 }
+//Users::Users(string firstName_, string lastName_, string ID_, string checkOut_)
+//{
+//}
 string Users::GetFirstName()
 {
 	return firstName_; 
@@ -63,7 +67,10 @@ void Users::setID(string id)
 {
 	ID_ = id; 
 }
-
+void Users::setEmail(string email)
+{
+	email_ = email; 
+}
 
 
 
