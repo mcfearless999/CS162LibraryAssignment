@@ -10,7 +10,7 @@
 
 
 char Users::usersFileList_[512] = "";
-char Users::currentUser_[512] = "";
+string Users::currentUser_ = "";
 
 Users::Users()
 {

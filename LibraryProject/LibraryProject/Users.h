@@ -21,7 +21,7 @@ private:
 public:
     //added static variables
     static char usersFileList_[512];
-    static char currentUser_[512];
+    static string currentUser_;
     int checkOut[5]; 
     Users();
 	Users(string firstName_, string lastName_, string ID_, string checkOut_);

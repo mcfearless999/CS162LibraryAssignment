@@ -26,7 +26,9 @@ void getBookFileName(string defaultBook);
 void getUsersFileName(string defaultUsers);
 string getUserLogin();
 void welcome();
-
+Users* getCurUser();
+void checkOutDecode(string checkOutString, string checkarr[]);
+string getBookTitle(int bookID);
 
 int main() {
     
@@ -194,8 +196,87 @@ string getUserLogin()
     return user;
 }
 
-void welcome(string Username)
+//loads user, prints welcome message, prints books currently checked out
+void welcome(string userName)
 {
-    cout << "Welcome " << "CurUser fname" << " " << "CurUser lname" << endl;
+    Users::currentUser_ =userName;
+    string curBooksOut;
+    string checkedOut[5];
+    //Users* curUser;
+    //curUser= getCurUser();
+    //Display welcome message
+    //cout << "Welcome " << CurUser->GetUserName(); << " " << "CurUser lname" << endl;
+    //curBookOut = CurUser->checkOut_;
+    //checkOutDecode(curBookOut, checkedOut);
+    for (int idx = 0; idx <4; idx++)
+    {
+        cout << checkedOut[idx] << endl;
+    }
+}
+
+Users* getCurUser()
+{
+    Users* storedUser =0;
+    Node * tempNode;
+    tempNode= (Node*)usersList.GetFirstNode();
+    storedUser = (Users*)tempNode->data_;
+    tempNode = (Node*) usersList.GetFirstNode();
+    long listLen = usersList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        if (Users::currentUser_ == storedUser->GetUserName() )
+        {
+            return storedUser;
+        }if(tempNode->next_)
+        {
+            tempNode =tempNode->next_;
+        }
+    }
+    return 0;
+}
+//stores book titles in an array after searching through the list for each one
+void checkOutDecode(string checkOutString, string checkArr[])
+{
+    int tempArr[5];
+    for (int arrIdx = 0; arrIdx < 5; arrIdx++ )
+    {
+        int lineIdx =0;
+        while(checkOutString[lineIdx] != '/')
+        {
+            lineIdx++;
+        }
+        tempArr[arrIdx] = stoi(checkOutString.substr(0,lineIdx));
+        string temp = getBookTitle(tempArr[arrIdx]);
+        checkArr = &temp;
+        checkOutString.erase(0,lineIdx+1);
+    }
+    
     
 }
+
+string getBookTitle(int bookID)
+{
+    string title;
+    if (bookID == 0) return "";
+    
+    Book * storedBook =0;
+    Node * tempNode;
+    tempNode= (Node*)bookList.GetFirstNode();
+    storedBook = (Book*)tempNode->data_;
+    tempNode = (Node*) usersList.GetFirstNode();
+    long listLen = bookList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        if (bookID == storedBook->GetID() )
+        {
+            string temp = storedBook->GetTitle();
+            return temp;
+        }if(tempNode->next_)
+        {
+            tempNode =tempNode->next_;
+        }
+    }
+    
+    return title;
+}
+
