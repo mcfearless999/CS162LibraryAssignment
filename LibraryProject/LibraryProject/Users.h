@@ -25,7 +25,7 @@ public:
     int checkOut[5]; 
     Users();
 	Users(string firstName_, string lastName_, string ID_, string checkOut_);
-	void Register(); 
+	 
 	void LogOn(); 
 	void CheckOutBooks();
         void CheckInBooks(); 
@@ -41,6 +41,7 @@ public:
 	
 	void setFirstName(string firstName); 
 	void setLastName(string lastName); 
-	void setID(string ID); 
+	void setID(string ID);
+	void setEmail(string email);  
 };
 #endif /* Users_h */
