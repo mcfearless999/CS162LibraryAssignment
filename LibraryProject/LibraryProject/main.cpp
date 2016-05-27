@@ -350,6 +350,7 @@ int getBookId(string bookTitle)
         {
             tempNode =tempNode->next_;
         }
+        bookList.SetCurNode(tempNode);
     }
     return 0;
 }
@@ -387,4 +388,14 @@ void checkOut(int bookId)
     
 }
 
+void removeFromLib()
+{
+    Node* tempBookNode = (Node*)bookList.GetCurNode();
+    Node* tempUserNode = (Node*)usersList.GetCurNode();
+    Book* curBook = (Book*) tempBookNode->data_;
+    Users* curUser = (Users*) tempUserNode->data_;
+    
+    string userName = curUser->GetUserName();
+    curBook->SetCheckout(userName);
+}
 
