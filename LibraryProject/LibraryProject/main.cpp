@@ -37,7 +37,7 @@ void checkOutBook();
 string getBookFromUser();
 int getBookId(string bookTitle);
 void checkOut(int bookId);
-
+void removeFromLib();
 
 int main() {
     
@@ -193,7 +193,7 @@ void getUsersFileName(string UsersName){
     strcpy(Users::usersFileList_,fileName);
     delete [] fileName;
 }
-
+//unfinished
 string getUserLogin()
 {
     string  user;
@@ -207,6 +207,7 @@ string getUserLogin()
 
 
 //loads user, prints welcome message, prints books currently checked out
+//completely untested
 void welcome(string userName)
 {
     Users::currentUser_ =userName;
@@ -223,7 +224,7 @@ void welcome(string userName)
         cout << checkedOut[idx] << endl;
     }
 }
-
+//may need to be redone
 Users* getCurUser()
 {
     Users* storedUser =0;
@@ -245,6 +246,7 @@ Users* getCurUser()
     return 0;
 }
 //stores book titles in an array after searching through the list for each one
+//tested
 void checkOutDecode(string checkOutString, string checkArr[])
 {
     int tempArr[5];
@@ -263,6 +265,8 @@ void checkOutDecode(string checkOutString, string checkArr[])
     
     
 }
+//untested
+//searches through book list for title based on ID
 
 string getBookTitle(int bookID)
 {
@@ -311,7 +315,8 @@ void Register(string data[])
  
 
 }
-
+//higher level function, needs run through
+//checks out books to the current user
 void checkOutBook()
 {
     string bookTitle;
@@ -320,7 +325,8 @@ void checkOutBook()
     //int bookId = 13;
     checkOut(bookId);
 }
-
+//tested
+//gets title from the user
 string getBookFromUser()
 {
     string title;
@@ -331,6 +337,8 @@ string getBookFromUser()
     return title;
 }
 
+//untested
+//searches through linked list by title
 int getBookId(string bookTitle)
 {
     int ID;
@@ -355,6 +363,8 @@ int getBookId(string bookTitle)
     return 0;
 }
 
+//mechanics tested
+//removes checked out books from checkedout string
 void checkOut(int bookId)
 {
     Node * tempNode =(Node*)usersList.GetCurNode();
@@ -387,7 +397,7 @@ void checkOut(int bookId)
     currentUser->CheckOutBooks(tempCheck);
     
 }
-
+//Untested
 void removeFromLib()
 {
     Node* tempBookNode = (Node*)bookList.GetCurNode();
