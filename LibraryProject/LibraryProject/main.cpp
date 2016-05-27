@@ -32,6 +32,13 @@ string getBookTitle(int bookID);
 
 void Register(string data[]);
 
+
+void checkOutBook();
+string getBookFromUser();
+int getBookId(string bookTitle);
+void checkOut(int bookId);
+
+
 int main() {
     
     string currentUser;
@@ -55,7 +62,7 @@ int main() {
         if (selection == 'b')
         {
             //check out book
-
+            checkOutBook();
             selection = ' ';
         }
         if (selection == 'c')
@@ -94,7 +101,7 @@ char printMenu()
     char choice = ' ';
     cout << "Please choose an option" << endl;
     cout << "a) " << endl;
-    cout << "b) " << endl;
+    cout << "b) Check out a book " << endl;
     cout << "c) " << endl;
     cout << "d) " << endl;
     cout << "e) " << endl;
@@ -282,7 +289,7 @@ string getBookTitle(int bookID)
     
     return title;
 }
-//load the username into currentUser
+//We are going to need to have this return the username as a string
 void Register(string data[])
 {
    
@@ -300,10 +307,84 @@ void Register(string data[])
 	cout << "Enter your email: " << endl; 
 	cin >> email; 
 	User.setEmail(email);
-      
-	
-
+    
  
 
 }
+
+void checkOutBook()
+{
+    string bookTitle;
+    bookTitle = getBookFromUser();
+    int bookId = getBookId(bookTitle);
+    //int bookId = 13;
+    checkOut(bookId);
+}
+
+string getBookFromUser()
+{
+    string title;
+    cout << "Please enter the title of the book you wish to check out?" << endl << "-> ";
+    cin.clear();
+    cin.ignore(1);
+    getline(cin,title);
+    return title;
+}
+
+int getBookId(string bookTitle)
+{
+    int ID;
+    Book * storedBook =0;
+    Node * tempNode;
+    tempNode= (Node*)bookList.GetFirstNode();
+    storedBook = (Book*)tempNode->data_;
+    tempNode = (Node*) usersList.GetFirstNode();
+    long listLen = bookList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        if (bookTitle == storedBook->GetTitle() )
+        {
+            ID = storedBook->GetID();
+            return ID;
+        }if(tempNode->next_)
+        {
+            tempNode =tempNode->next_;
+        }
+    }
+    return 0;
+}
+
+void checkOut(int bookId)
+{
+    Node * tempNode =(Node*)usersList.GetCurNode();
+    Users * currentUser = (Users*)tempNode->data_;
+    string checkedOutBooks = currentUser->GetCheckOut(); //"5/23/11/0/0";
+    string tempCheck ="";
+    int tempArr[5];
+    for (int arrIdx = 0; arrIdx < 5; arrIdx++ )
+    {
+        int lineIdx =0;
+        while(checkedOutBooks[lineIdx] != '/')
+        {
+            lineIdx++;
+        }
+        tempArr[arrIdx] = stoi(checkedOutBooks.substr(0,lineIdx));
+        checkedOutBooks.erase(0,lineIdx+1);
+    }
+    for (int idx = 0; idx < 5; idx++)
+    {
+        if(tempArr[idx] == 0)
+        {
+            tempArr[idx] = bookId;
+            bookId = 0;
+        }
+        tempCheck.append(to_string(tempArr[idx]));
+        tempCheck.append("/");
+    }
+    tempCheck.pop_back();
+    //cout << tempCheck << endl;
+    currentUser->CheckOutBooks(tempCheck);
+    
+}
+
 

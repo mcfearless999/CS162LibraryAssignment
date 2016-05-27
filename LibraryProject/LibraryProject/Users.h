@@ -27,7 +27,7 @@ public:
 	Users(string firstName_, string lastName_, string ID_, string checkOut_);
 	 
 	void LogOn(); 
-	void CheckOutBooks();
+	void CheckOutBooks(string checkOutString);
         void CheckInBooks(); 
 	void AlreadyCheckedOut();
 	

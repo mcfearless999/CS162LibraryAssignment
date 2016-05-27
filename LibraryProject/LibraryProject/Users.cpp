@@ -74,6 +74,11 @@ void Users::setEmail(string email)
 
 
 
+void Users::CheckOutBooks(string checkOutString)
+{
+    checkOut_ = checkOutString;
+}
+
 
 
 
