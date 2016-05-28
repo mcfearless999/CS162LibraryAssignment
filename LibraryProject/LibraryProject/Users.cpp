@@ -17,12 +17,8 @@ Users::Users()
 	firstName_ = ""; 
 	lastName_ = ""; 
  	email_ = ""; 
-        ID_ = "";  
-	
-	for (int idx = 0; idx <4; idx++)
-	{
-	checkOut[idx]=0;
-	} 
+    ID_ = "";  
+	checkOut_= "0/0/0/0/0";
 }
 
 Users::Users(string firstName_, string lastName_, string ID_, string checkOut_)
