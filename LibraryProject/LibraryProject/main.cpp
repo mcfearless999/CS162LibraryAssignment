@@ -30,7 +30,7 @@ void welcome();
 Users* getCurUser(string email);
 
 void PrintBooksList(); 
-void Register(string data[]);
+string Register();
 void ChangeUsers();  
 void LoadTextFiles();  
 int lineCounter(); 
@@ -63,7 +63,7 @@ int main() {
     
 
     currentUser = login();
-    //if (cancelCheck(currentUser) == true) return 0;
+    if (cancelCheck(currentUser) == true) return 0;
     //welcome(currentUser);
     
     printMenu();
@@ -118,9 +118,9 @@ char printMenu()
     cout << "Please choose an option" << endl;
     cout << "a) " << endl;
     cout << "b) Check out a book " << endl;
-    cout << "c) " << endl;
+    cout << "c) Check in a book " << endl;
     cout << "d) " << endl;
-    cout << "e) " << endl;
+    cout << "e) Change Users " << endl;
     cout << "f) Quit" << endl;
     cout << " -> ";
     
@@ -144,7 +144,7 @@ string login()
     }
     if (choice == 'b')
     {
-        //userLogin = registerUser();
+       userLogin = Register();
         choice= ' ';
     }
     if (choice == 'c')
@@ -310,10 +310,6 @@ void welcome()
 
 //may need to be redone
 Users* getCurUser(string email)
-
-
-
-
 {
     string user; 
     Users* storedUser =0;
@@ -398,24 +394,28 @@ Book*  getBookByID(int bookID)
 }
 
 //We are going to need to have this return the username as a string
-void Register(string data[])
+string Register()
 {
    
- 	Users User;
+ 	Users* User = new Users;
 	string fname; 
 	string lname; 
 	string email; 
 	string id;  
  	cout << "Enter your First Name: " << endl; 
 	cin >> fname; 
- 	User.setFirstName(fname); 
+ 	User->setFirstName(fname); 
         cout << "Enter your Last Name: " << endl; 
 	cin >> lname; 
-	User.setLastName(lname); 
+	User->setLastName(lname); 
 	cout << "Enter your email: " << endl; 
 	cin >> email; 
-	User.setEmail(email);
-
+	User->setEmail(email);
+  
+        usersList.AddLinkToBack(User); 
+	
+	
+	return email; 	
         
 	
 }
