@@ -26,13 +26,17 @@ void getBookFileName(string defaultBook);
 void getUsersFileName(string defaultUsers);
 string getUserLogin();
 void welcome();
-Users* getCurUser();
+Users* getCurUser(string email);
 void checkOutDecode(string checkOutString, string checkarr[]);
 string getBookTitle(int bookID);
-
+void PrintBooksList(); 
 void Register(string data[]);
+void ChangeUsers();  
+void LoadTextFiles();  
+int lineCounter(); 
 
-int main() {
+int main()
+{
     
     string currentUser;
     
@@ -116,7 +120,7 @@ string login()
     char choice =loginMenu();
     if (choice == 'a')
     {
-        //userLogin = getUserLogin();
+        userLogin = getUserLogin();
         choice = ' ';
     }
     if (choice == 'b')
@@ -157,6 +161,7 @@ void getBookFileName(string BookName){
     char* fileName;
     fileName = new char[256]; //new*
     fstream file;
+    cout << "Enter Book file name: " << endl; 
     file.open(BookName.c_str(),ios_base::in) ;
     while (file.good() != true)
     {
@@ -174,6 +179,7 @@ void getUsersFileName(string UsersName){
     char* fileName;
     fileName = new char[256]; //new*
     fstream file;
+    cout << "Enter Users file name: " << endl; 
     file.open(UsersName.c_str(),ios_base::in) ;
     while (file.good() != true)
     {
@@ -186,16 +192,76 @@ void getUsersFileName(string UsersName){
     strcpy(Users::usersFileList_,fileName);
     delete [] fileName;
 }
+void LoadTextFiles()
+{
+  fstream inFile; 
+  
+  string data[4]; 
+  string fileLine; 
+  Users* userptr; 
+ 
+  //getUsersFileName(); 
+
+  //ClearList(); 
+ 
+  inFile.open(Users::usersFileList_,ios::in); 
+  int lineNum = lineCounter(); 
+  for (int idx = 0; idx < lineNum; idx++)
+  {
+     getline(inFile,fileLine); 
+     //GetData(data, fileLine); 
+  }
+
+  cout << "This worked " << endl; 
+  inFile.close(); 
+  inFile.clear();
+
+ 
+}
+     
+
+int lineCounter()
+{
+    int linecount = 0;
+    fstream inFile;
+    string fileLine;
+    inFile.open(Users::usersFileList_,ios::in);
+    do {
+        getline(inFile,fileLine);
+        linecount++;
+    }while (inFile.peek() != EOF);
+    inFile.close();
+    inFile.clear();
+    
+    
+    return linecount;
+}
+
+
 
 string getUserLogin()
 {
-    string  user;
-    //prompt user for username
-    //check login
-    //if matched return Node*
-    //set currentuser within the users object
+    Node* tempNode; 
+    Users* storedUser = 0; 
+    string email; 
+    cout << "Enter email: " << endl; 
+    cin >> email; 
+    storedUser = (Users*)tempNode->data_;
+    long listlen = usersList.GetListLength();  
+    for (int idx = 0; idx < (listlen); idx++)
+     {
+       if (email == storedUser->GetEmail()) 
+	{
+	    return email; 
+        }
+        
+     cout << "Email Not Found Please Register " << endl; 
+    	
+    getCurUser(email); 
+     }
+    return 0; 
     
-    return user;
+    
 }
 
 
@@ -217,17 +283,23 @@ void welcome(string userName)
     }
 }
 
-Users* getCurUser()
+Users* getCurUser(string email)
 {
+    string user; 
     Users* storedUser =0;
     Node * tempNode;
     tempNode= (Node*)usersList.GetFirstNode();
     storedUser = (Users*)tempNode->data_;
     tempNode = (Node*) usersList.GetFirstNode();
     long listLen = usersList.GetListLength();
+    cout << "Enter the user to login as: " << endl; 
+
+    cin >> user; 
+    
+
     for( int idx = 0; idx < (listLen); idx++  )
     {
-        if (Users::currentUser_ == storedUser->GetUserName() )
+        if (email  == storedUser->GetUserName() )
         {
             return storedUser;
         }if(tempNode->next_)
@@ -299,10 +371,13 @@ void Register(string data[])
 	cout << "Enter your email: " << endl; 
 	cin >> email; 
 	User.setEmail(email);
-      
+        
 	
-
- 
-
 }
-
+void ChangeUsers()
+{
+   cout << "Logging in as new user... " << '\n' << endl;
+   cout << "Enter email: " << endl; 
+   getUserLogin(); 
+    
+} 
