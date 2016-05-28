@@ -37,7 +37,7 @@ string getUserLogin();
 void welcome();
 string getCurUser(string email);
 
-void PrintBooksList(); 
+void printAllBooks();
 string Register();
 void ChangeUsers();  
 void LoadTextFiles();  
@@ -595,6 +595,32 @@ int getBookId(string bookTitle)
         bookList.SetCurNode(tempNode);
     }
     return 0;
+}
+//tested, works
+void printAllBooks()
+{
+    Node* tempNode;
+    Book* tempBook;
+    tempNode = (Node*) bookList.GetFirstNode();
+    tempBook = (Book*) tempNode->data_;
+    long listLen = bookList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        cout << tempBook->GetTitle()<< ", " << tempBook->GetAuth() << ", "<<
+        tempBook->GetID() << "  ";
+        if (tempBook->GetCheckOut() != "0")
+        {
+            cout << "Currently Checked out";
+        }
+        cout << endl;
+        if (tempNode->next_){
+            tempNode = tempNode->next_;
+        }
+        tempBook = (Book*)tempNode->data_;
+        //print data to console
+    }
+    
+    
 }
 
 //mechanics tested
