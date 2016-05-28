@@ -15,6 +15,9 @@
 
 using namespace std;
 
+const int MAX_CHAR = 150;
+
+Users userList; 
 LinkedList bookList;
 LinkedList usersList;
 
@@ -27,7 +30,7 @@ void getUsersFileName(string defaultUsers);
 string getUserLogin();
 
 void welcome();
-Users* getCurUser(string email);
+string getCurUser(string email);
 
 void PrintBooksList(); 
 string Register();
@@ -83,17 +86,17 @@ int main() {
         }
         if (selection == 'c')
         {
-
+            checkInBook(); 
             selection = ' ';
         }
         if (selection == 'd')
         {
-            
+            //PrintAllBooks();
             selection = ' ';
         }
         if (selection == 'e'){
             //change user
-
+	    ChangeUsers(); 	
             selection = ' ';
             
         }
@@ -119,7 +122,7 @@ char printMenu()
     cout << "a) " << endl;
     cout << "b) Check out a book " << endl;
     cout << "c) Check in a book " << endl;
-    cout << "d) " << endl;
+    cout << "d) Print all books " << endl;
     cout << "e) Change Users " << endl;
     cout << "f) Quit" << endl;
     cout << " -> ";
@@ -214,13 +217,13 @@ void getUsersFileName(string UsersName){
 
 void LoadTextFiles()
 {
-  fstream inFile; 
-  
+  ifstream inFile; 
+  string defaultUsers;   
   string data[4]; 
   string fileLine; 
-  Users* userptr; 
+  int counter = 0; 
  
-  //getUsersFileName(); 
+  getUsersFileName(defaultUsers); 
 
   //ClearList(); 
  
@@ -269,19 +272,9 @@ string getUserLogin()
     string email; 
     cout << "Enter email: " << endl; 
     cin >> email; 
-    storedUser = (Users*)tempNode->data_;
-    long listlen = usersList.GetListLength();  
-    for (int idx = 0; idx < (listlen); idx++)
-     {
-       if (email == storedUser->GetEmail()) 
-	{
-	    return email; 
-        }
-        
-     cout << "Email Not Found Please Register " << endl; 
     	
     getCurUser(email); 
-     }
+    
     return 0; 
     
     
@@ -308,33 +301,21 @@ void welcome()
     }
 }
 
-//may need to be redone
-Users* getCurUser(string email)
+//needs some work
+string getCurUser(string email)
 {
     string user; 
-    Users* storedUser =0;
-    Node * tempNode;
-    tempNode= (Node*)usersList.GetFirstNode();
-    storedUser = (Users*)tempNode->data_;
-    tempNode = (Node*) usersList.GetFirstNode();
-    long listLen = usersList.GetListLength();
-    cout << "Enter the user to login as: " << endl; 
-
-    cin >> user; 
+    long counter = usersList.GetListLength(); 
+     
     
-
-    for( int idx = 0; idx < (listLen); idx++  )
+    while (counter != 0)
     {
-        if (email  == storedUser->GetUserName() )
-        {
-            return storedUser;
-        }if(tempNode->next_)
-        {
-            tempNode =tempNode->next_;
-        }
+       if (email == userList.GetEmail()) 
+	return email;
+        
     }
-    return 0;
-}
+    return email; 
+}        
 //stores book titles in an array after searching through the list for each one
 //tested
 void Decode(string checkOutString, int tempArr[])
@@ -425,10 +406,6 @@ void ChangeUsers()
    cout << "Enter email: " << endl; 
    getUserLogin(); 
     
-
-
-    
- 
 
 }
 //higher level function, needs run through
