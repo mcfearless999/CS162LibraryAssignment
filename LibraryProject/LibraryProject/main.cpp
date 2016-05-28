@@ -80,7 +80,7 @@ int main() {
         if (selection == 'a')
         {
             //print book list
-            
+            printAllBooks();
             selection = ' ';
         }
         if (selection == 'b')
@@ -194,6 +194,7 @@ string login()
     string defaultUsers = "usersList.txt";
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
+    loadBookFile();
     string userLogin;
     char choice =loginMenu();
     if (choice == 'a')
@@ -244,10 +245,8 @@ void getBookFileName(string BookName){
     if (file.good() != true)
     {
         while(file.good() != true){
-            cout << "Error: unable to open file, please enter a valid Input Book list file name" << endl;
-            cin.clear();
-            cin.ignore(1);
-            cin.get(fileName,256, '\n'),
+            cout << "Error: unable to open file, please enter a valid Book list file name" << endl;
+            cin >> fileName;
             file.open(fileName,ios_base::in) ;
         }
         strcpy(Book::bookFileList_,fileName);
@@ -263,18 +262,22 @@ void getUsersFileName(string UsersName){
     char* fileName;
     fileName = new char[256]; //new*
     fstream file;
-    //cout << "Enter Users file name: " << endl;
     file.open(UsersName.c_str(),ios_base::in) ;
-    while (file.good() != true)
+    
+    if (file.good() != true)
     {
-        cout << "Error: unable to open file, please enter Input User list file name" << endl;
-        cin.clear();
-        cin.ignore(1);
-        cin.get(fileName,256, '\n'),
-        file.open(fileName,ios_base::in) ;
+        while(file.good() != true){
+            cout << "Error: unable to open file, please enter a valid User list file name" << endl;
+
+            cin >> fileName;
+            file.open(fileName,ios_base::in) ;
+        }
+        strcpy(Users::usersFileList_,fileName);
+    }else {
+        strcpy(Users::usersFileList_,UsersName.c_str());
     }
-    strcpy(Users::usersFileList_,fileName);
     delete [] fileName;
+    
 }
 
 void LoadTextFiles()
@@ -343,7 +346,7 @@ void loadBookFile()
         //read data from each song file
         getline(inFile,fileLine);
         getBookData(fileLine, bookData);
-        //dynamically create list of songs from mp3 collection
+        //dynamically create list of books from file
         bookPtr = loadBookPointer(bookData);
         bookList.AddLinkToBack(bookPtr);
     }
