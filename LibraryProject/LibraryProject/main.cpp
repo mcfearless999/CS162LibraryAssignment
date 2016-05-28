@@ -18,12 +18,17 @@ using namespace std;
 LinkedList bookList;
 LinkedList usersList;
 
+void ClearBookList();
+void ClearUserList();
 char printMenu();
 bool cancelCheck(string);
 string login();
 char loginMenu();
 void getBookFileName(string defaultBook);
 void getUsersFileName(string defaultUsers);
+void loadBookFile();
+void getBookData(string fileLine,string bookData[]);
+Book* loadBookPointer(string bookData[]);
 string getUserLogin();
 
 void welcome();
@@ -33,7 +38,7 @@ void PrintBooksList();
 string Register();
 void ChangeUsers();  
 void LoadTextFiles();  
-int lineCounter(); 
+int lineCounter(char fileName[]);
 
 
 
@@ -111,6 +116,57 @@ int main() {
     
     return 0;
 }
+
+void ClearBookList()
+{
+    //start at the first node
+    Node * tempNode= (Node*)bookList.GetFirstNode();
+    long idx = bookList.GetListLength();
+    //for each node
+    while (idx !=0)
+    {
+        //go to next node
+        tempNode = (Node*)bookList.GetNextNode();
+        Book* tempBook = (Book*)tempNode->data_;
+        
+        //delete data and set to NULL
+        if (tempBook !=0)
+        {
+            delete tempBook;
+            tempNode->data_ = NULL;
+            
+        }
+        //delete node
+        bookList.RemoveLinkFromFront();
+        idx = bookList.GetListLength();
+    }
+}
+
+void ClearUserList()
+{
+    //start at the first node
+    Node * tempNode= (Node*)usersList.GetFirstNode();
+    long idx = usersList.GetListLength();
+    //for each node
+    while (idx !=0)
+    {
+        //go to next node
+        tempNode = (Node*)bookList.GetNextNode();
+        Users* tempUser = (Users*)tempNode->data_;
+        
+        //delete data and set to NULL
+        if (tempUser !=0)
+        {
+            delete tempUser;
+            tempNode->data_ = NULL;
+            
+        }
+        //delete node
+        usersList.RemoveLinkFromFront();
+        idx = usersList.GetListLength();
+    }
+}
+
 //this is a generalized menu that would display different options
 char printMenu()
 {
@@ -180,25 +236,31 @@ void getBookFileName(string BookName){
     char* fileName;
     fileName = new char[256]; //new*
     fstream file;
-    cout << "Enter Book file name: " << endl; 
     file.open(BookName.c_str(),ios_base::in) ;
-    while (file.good() != true)
+    
+    if (file.good() != true)
     {
-        cout << "Error: unable to open file, please enter a valid Input Book list file name" << endl;
-        cin.clear();
-        cin.ignore(1);
-        cin.get(fileName,256, '\n'),
-        file.open(fileName,ios_base::in) ;
+        while(file.good() != true){
+            cout << "Error: unable to open file, please enter a valid Input Book list file name" << endl;
+            cin.clear();
+            cin.ignore(1);
+            cin.get(fileName,256, '\n'),
+            file.open(fileName,ios_base::in) ;
+        }
+        strcpy(Book::bookFileList_,fileName);
+    }else {
+        strcpy(Book::bookFileList_,BookName.c_str());
     }
-    strcpy(Book::bookFileList_,fileName);
     delete [] fileName;
+    
 }
+
 
 void getUsersFileName(string UsersName){
     char* fileName;
     fileName = new char[256]; //new*
     fstream file;
-    cout << "Enter Users file name: " << endl; 
+    //cout << "Enter Users file name: " << endl;
     file.open(UsersName.c_str(),ios_base::in) ;
     while (file.good() != true)
     {
@@ -225,7 +287,7 @@ void LoadTextFiles()
   //ClearList(); 
  
   inFile.open(Users::usersFileList_,ios::in); 
-  int lineNum = lineCounter(); 
+  int lineNum = lineCounter(Users::usersFileList_);
   for (int idx = 0; idx < lineNum; idx++)
   {
      getline(inFile,fileLine); 
@@ -240,12 +302,12 @@ void LoadTextFiles()
 }
      
 
-int lineCounter()
+int lineCounter(char fileName[])
 {
     int linecount = 0;
     fstream inFile;
     string fileLine;
-    inFile.open(Users::usersFileList_,ios::in);
+    inFile.open(fileName,ios::in);
     do {
         getline(inFile,fileLine);
         linecount++;
@@ -257,6 +319,84 @@ int lineCounter()
     return linecount;
 }
 
+void loadBookFile()
+{
+    fstream inFile;
+    string fileLine;
+    Book* bookPtr;
+    string bookData[5];
+    int lineNum =0;
+    string name;
+    //clear list
+    ClearBookList();
+    //enter prompt for file path
+    
+    //get number of lines
+    lineNum = lineCounter(Book::bookFileList_);
+    //open and read file
+    inFile.open(Book::bookFileList_,ios::in);
+    for (int idx = 0; idx < lineNum; idx++)
+    {
+        //read data from each song file
+        getline(inFile,fileLine);
+        getBookData(fileLine, bookData);
+        //dynamically create list of songs from mp3 collection
+        bookPtr = loadBookPointer(bookData);
+        bookList.AddLinkToBack(bookPtr);
+    }
+    cout << "File loaded, " <<  lineNum << " books loaded" << endl;
+}
+void getBookData(string fileLine,string bookData[])
+{
+    string tempWord;
+    int lineIdx = 0;
+    
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempWord = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    bookData[0] = tempWord;
+    lineIdx=0;
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempWord = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    lineIdx=0;
+    bookData[1] = tempWord;
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempWord = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    lineIdx=0;
+    bookData[2] = tempWord;
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempWord = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    bookData[3] = tempWord;
+    bookData[4] = fileLine;
+    
+    
+}
+Book* loadBookPointer(string bookData[])
+{
+    Book* tempBook = new Book;
+    tempBook->SetTitle(bookData[0]);
+    tempBook->SetAuth(bookData[1]);
+    tempBook->SetPub(bookData[2]);
+    tempBook->SetID(bookData[3]);
+    tempBook->SetCheckout(bookData[4]);
+    
+    return tempBook;
+}
 
 
 
@@ -412,7 +552,7 @@ string Register()
 	cin >> email; 
 	User->setEmail(email);
   
-        usersList.AddLinkToBack(User); 
+        usersList.AddLinkToBack(User);
 	
 	
 	return email; 	
