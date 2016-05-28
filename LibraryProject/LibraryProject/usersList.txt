@@ -1,0 +1,4 @@
+Marcel, deLisser, 123456, mdelisser@gmail.com, 0/0/0/0/0
+Chris, Mcpherson, 567890, cmcpherson@gmail.com 6/0/0/0/0
+Bugs, Bunny, 456788, bugsbunny@gmail.com 0/0/0/0/0
+Wiley, Coyote, 789903, wileycoyote@gmail.com 0/0/0/0/0

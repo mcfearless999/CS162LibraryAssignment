@@ -1,0 +1,8 @@
+Slaughterhouse-Five, Kurt Vonnegut, Simon and Shuster, 1, 0 
+1984, George Orwell, Penguin Publishers, 2, 0
+The Count of Monte Cristo, Alexander Dumas, Random House 3, 0
+The Fellowship of the Ring, J.R.R Tolkien, Penguin Publishers, 4, 0
+Neuromancer, William Gibson, Simon and Schuster, 5, 0
+Animal Farm, George Orwell, Penguin Publishers, 6, cmcpherson@gmail.com 
+Essentials of C++, Some Guy, A Company, 7, 0
+
