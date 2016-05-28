@@ -74,17 +74,14 @@ int main() {
     if (cancelCheck(currentUser) == true) return 0;
     //welcome(currentUser);
     
-    printMenu();
+    selection = printMenu();
     for (;;)
     {
         if (selection == 'a')
         {
             //print book list
-<<<<<<< HEAD
             printAllBooks();             
-=======
-            printAllBooks();
->>>>>>> 1757ec41bb8d5edc0dab7782df22b3773013a7ce
+
             selection = ' ';
         }
         if (selection == 'b')
