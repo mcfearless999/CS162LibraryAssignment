@@ -33,7 +33,7 @@ void loadBookFile();
 void getBookData(string fileLine,string bookData[]);
 Book* loadBookPointer(string bookData[]);
 string getUserLogin();
-
+Users* loadUsersPointer(string usersData[]);
 void welcome();
 string getCurUser(string email);
 
@@ -42,7 +42,7 @@ string Register();
 void ChangeUsers();  
 void LoadTextFiles();  
 int lineCounter(char fileName[]);
-
+void loadUserFile(); 
 
 
 void checkOutBook();
@@ -80,7 +80,7 @@ int main() {
         if (selection == 'a')
         {
             //print book list
-            
+            printAllBooks();             
             selection = ' ';
         }
         if (selection == 'b')
@@ -175,10 +175,10 @@ char printMenu()
 {
     char choice = ' ';
     cout << "Please choose an option" << endl;
-    cout << "a) " << endl;
+    cout << "a) Print All Books " << endl;
     cout << "b) Check out a book " << endl;
     cout << "c) Check in a book " << endl;
-    cout << "d) Print all books " << endl;
+    cout << "d)  " << endl;
     cout << "e) Change Users " << endl;
     cout << "f) Quit" << endl;
     cout << " -> ";
@@ -728,5 +728,43 @@ int checkInPrompt(int bookIDs[])
     
     return checkInBook;
 }
+void loadUserFile()
+{
+    fstream inFile; 
+    string fileLine;
+    Users* UserPtr;
+    string UserData[4];
+    int lineNum =0;
+    string name;
+    //clear list
+    //ClearBookList();
+    //enter prompt for file path
+
+    //get number of lines
+    lineNum = lineCounter(Users::usersFileList_);
+    //open and read file
+    inFile.open(Users::usersFileList_,ios::in);
+    for (int idx = 0; idx < lineNum; idx++)
+    {
+        //read data from each song file
+        getline(inFile,fileLine);
+        //getBookData(fileLine, bookData);
+        //dynamically create list of songs from mp3 collection
+        UserPtr = loadUsersPointer(UserData);
+        usersList.AddLinkToBack(UserPtr);
+    }
+    cout << "File loaded, " <<  lineNum << " users loaded" << endl;
+}
+Users* loadUsersPointer(string usersData[])
+{
+    Users* tempUser = new Users;
+    tempUser->setFirstName(usersData[0]);
+    tempUser->setLastName(usersData[1]);
+    tempUser->setEmail(usersData[2]);
+    tempUser->setID(usersData[3]);
+
+    return tempUser;
+}
+
 
 
