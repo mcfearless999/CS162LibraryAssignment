@@ -19,9 +19,7 @@ BookCheck
 
 
 Marcel
-login
-registration
 load file function
 print all books
-change users
-display current checked out books
+
+
