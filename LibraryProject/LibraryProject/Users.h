@@ -29,7 +29,7 @@ public:
 	void LogOn(); 
     void CheckBooks(string booksList);
 	void AlreadyCheckedOut();
-	
+        void AppendToUsersFile(); 	
 	string GetUserName();
     //I think we should have both first and last
 	string GetFirstName();
