@@ -43,6 +43,11 @@ LinkedList::~LinkedList()
         }
     }
 }
+
+void LinkedList::SetCurNode(Node* current)
+{
+    curNode_ = current;
+}
 void LinkedList::AddLinkToBack(void* ptr)
 {
     if (first_ == 0 )
@@ -118,6 +123,11 @@ void* LinkedList::GetNextNode()
         return curNode_;
     }
 }
+void* LinkedList::GetCurNode()
+{
+    return curNode_;
+}
+
 long LinkedList::GetListLength()
 {
     return listLen_;

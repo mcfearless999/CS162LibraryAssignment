@@ -24,11 +24,13 @@ private:
 public:
     LinkedList();
     ~LinkedList();
+    void SetCurNode(Node* Current);
     void AddLinkToBack(void* ptr);
     void* RemoveThisLink(Node* node);
     void* RemoveLinkFromFront();
     void* GetFirstNode();
     void* GetNextNode();
+    void* GetCurNode();
     long GetListLength();
 };
 
