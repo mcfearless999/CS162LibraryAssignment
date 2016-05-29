@@ -15,7 +15,6 @@
 
 using namespace std;
 
-const int MAX_CHAR = 150;
 
 Users userList; 
 LinkedList bookList;
@@ -80,6 +79,7 @@ int main() {
         if (selection == 'a')
         {
             //print book list
+
             printAllBooks();             
 
             selection = ' ';
@@ -450,15 +450,7 @@ string getCurUser(string email)
 {
     string user; 
     long counter = usersList.GetListLength(); 
-     
-    
-    while (counter != 0)
-    {
-       if (email == userList.GetEmail()) 
-	return email;
-        
-    }
-    return email; 
+    return email;     
 }        
 //stores book titles in an array after searching through the list for each one
 //tested
@@ -538,6 +530,7 @@ string Register()
 	User->setEmail(email);
   
         usersList.AddLinkToBack(User);
+ 	usersList.GetLastNode(); 
 	
 	
 	return email; 	

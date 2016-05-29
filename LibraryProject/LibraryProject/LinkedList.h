@@ -22,6 +22,7 @@ private:
     long listLen_;
     
 public:
+  
     LinkedList();
     ~LinkedList();
     void SetCurNode(Node* Current);
@@ -31,6 +32,7 @@ public:
     void* GetFirstNode();
     void* GetNextNode();
     void* GetCurNode();
+    void* GetLastNode();  
     long GetListLength();
 };
 
