@@ -11,7 +11,7 @@
 #include "LinkedList.h"
 
 
-using namespace std;
+using namespace std; 
 
 LinkedList::LinkedList()
 {
@@ -132,3 +132,9 @@ long LinkedList::GetListLength()
 {
     return listLen_;
 }
+void* LinkedList::GetLastNode()
+{  
+    curNode_ = last_;
+    return curNode_;  
+}
+
