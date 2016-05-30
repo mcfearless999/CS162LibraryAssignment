@@ -21,8 +21,8 @@ LinkedList bookList;
 LinkedList usersList;
 
 
-const string defaultBook = "/users/chrism/bookList.txt";
-const string defaultUsers = "/users/chrism/usersList.txt";
+const string defaultBook = "bookList.txt";
+const string defaultUsers = "List.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -111,30 +111,24 @@ int main() {
         }
         if (selection == 'd')
         {
-            //PrintAllBooks();
+            //Change Users
+	    ChangeUsers(); 
             selection = ' ';
         }
-        if (selection == 'e'){
-            //change user
-	    ChangeUsers(); 	
-            selection = ' ';
-            
-        }
-        if (selection == 'f'){
-            WriteBookToFile();
-            ClearBookList();
-	    
-            ClearUserList();
-            return 0;
-            
-        }else{
-            selection = printMenu();
+        if (selection == 'e')
+	{
+            WriteBookToFile(); 
+	    ClearBookList(); 
+	    ClearUserList();	
+	    return 0; 	
+                
+        }   
+        else
+	{
+
         }
     
-
     }
-
-    return 0;
 }
 
 void ClearBookList()
@@ -195,9 +189,8 @@ char printMenu()
     cout << "a) Print All Books " << endl;
     cout << "b) Check out a book " << endl;
     cout << "c) Check in a book " << endl;
-    cout << "d)  " << endl;
-    cout << "e) Change Users " << endl;
-    cout << "f) Quit" << endl;
+    cout << "d) Change Users " << endl;
+    cout << "e) Quit" << endl;
     cout << " -> ";
     
     cin >> choice;
@@ -588,11 +581,19 @@ string Register()
 	usersArray[1] = lastName; 
 	usersArray[2] = email; 
 	usersArray[3] = id; 
-	 
+	
+	Users* tempUser = findUser(email); 
+        if (tempUser != 0)
+	{
+	  cout << "That user is already registered " << endl;
+	  return 0;  
+	}
+	else
+	{ 
 	Users* tempPtr = loadUsersPointer(usersArray); 
 	tempPtr->Users::AppendToUsersFile(); 
 	return email; 
-
+	}
 	
 }
 void ChangeUsers()
