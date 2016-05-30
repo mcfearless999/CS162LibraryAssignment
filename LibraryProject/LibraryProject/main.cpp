@@ -32,7 +32,7 @@ void getUsersData(string fileLine,string usersData[]);
 string getUserLogin();
 Users* loadUsersPointer(string usersData[]);
 void welcome(string userName);
-string getCurUser(string email);
+        Users* findUser(string userName);
 
 void printAllBooks();
 string Register();
@@ -117,7 +117,8 @@ int main() {
             
         }
         if (selection == 'f'){
-
+            ClearBookList();
+            ClearUserList();
             return 0;
             
         }else{
@@ -126,8 +127,7 @@ int main() {
     
 
     }
-    
-    
+
     return 0;
 }
 
@@ -244,9 +244,6 @@ bool cancelCheck(string input)
 }
 void fileFunctions()
 {
-
-    string defaultBook = "bookList.txt";
-    string defaultUsers = "usersList.txt";
 
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
@@ -433,9 +430,7 @@ string getUserLogin()
     Users* storedUser = 0; 
     string email; 
     cout << "Enter email: " << endl; 
-    cin >> email; 
-    	
-    getCurUser(email); 
+    cin >> email;
     
     return email; 
     
@@ -451,9 +446,9 @@ void welcome(string userName)
 
     string curBooksOut;
     int checkedOut[5];
-
+    
     Node* tempNode = (Node*)usersList.GetCurNode();
-    Users* curUser = (Users*)tempNode->data_;
+    Users* curUser = findUser(userName);
     Book* tempBook;
     
     //Display welcome message
@@ -465,10 +460,9 @@ void welcome(string userName)
     {
         cout << "No Books currently checked out" << endl;
     }else{
-    
+    cout << "you curently have these books checked out" << endl;
     for (int idx = 0; idx <5; idx++)
     {
-        cout << "you curently have these books checked out" << endl;
         //cout << checkedOut[idx] << endl;
             tempBook = getBookByID(checkedOut[idx]);
             if (tempBook !=0)
@@ -480,12 +474,35 @@ void welcome(string userName)
 }
 
 //needs some work
-string getCurUser(string email)
+Users* findUser(string userName)
 {
-    string user; 
-    long counter = usersList.GetListLength(); 
-    return email;     
-}        
+    string title;
+    
+    Users * storedUser =0;
+    Node * tempNode;
+    tempNode= (Node*)usersList.GetFirstNode();
+    storedUser = (Users*)tempNode->data_;
+    long listLen = bookList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        storedUser = (Users*)tempNode->data_;
+        string tempUser =storedUser->GetEmail();
+        if (userName == tempUser )
+        {
+            usersList.SetCurNode(tempNode);
+            return storedUser;
+            
+        }if(tempNode->next_)
+        {
+            tempNode =tempNode->next_;
+            
+        }
+    }
+    cout << "Sorry, username not found. Please Register.";
+    return 0;
+
+
+}
 //stores book titles in an array after searching through the list for each one
 //tested
 void Decode(string checkOutString, int tempArr[])
@@ -583,7 +600,7 @@ string Register()
 	 
 	Users* tempPtr = loadUsersPointer(usersArray); 
 	tempPtr->Users::AppendToUsersFile(); 
-	return firstName; 
+	return email;
 	
 }
 void ChangeUsers()
@@ -808,7 +825,7 @@ void loadUserFile()
     fstream inFile;
     string fileLine;
     Users* UserPtr;
-    string UserData[4];
+    string UserData[5];
     int lineNum =0;
     string name;
     //clear list
@@ -823,7 +840,7 @@ void loadUserFile()
     {
         //read data from each song file
         getline(inFile,fileLine);
-        //getBookData(fileLine, bookData);
+        getUsersData(fileLine,UserData);
         //dynamically create list of songs from mp3 collection
         UserPtr = loadUsersPointer(UserData);
         usersList.AddLinkToBack(UserPtr);
@@ -835,8 +852,9 @@ Users* loadUsersPointer(string usersData[])
     Users* tempUser = new Users;
     tempUser->setFirstName(usersData[0]);
     tempUser->setLastName(usersData[1]);
-    tempUser->setEmail(usersData[2]);
-    tempUser->setID(usersData[3]);
+    tempUser->setID(usersData[2]);
+    tempUser->setEmail(usersData[3]);
+    tempUser->setCheckOut(usersData[4]);
 
     //tempUser->Users::AppendToUsersFile(); 
     return tempUser;  
@@ -854,6 +872,7 @@ void getUsersData(string fileLine,string usersData[])
     tempUsers = fileLine.substr(0, lineIdx);
     fileLine.erase(0, lineIdx + 2);
     usersData[0] = tempUsers;
+    //cout << tempUsers << endl;
     lineIdx=0;
     while (fileLine[lineIdx] != ',')
     {
@@ -863,6 +882,7 @@ void getUsersData(string fileLine,string usersData[])
     fileLine.erase(0, lineIdx + 2);
     lineIdx=0;
     usersData[1] = tempUsers;
+    //cout << tempUsers << endl;
     while (fileLine[lineIdx] != ',')
     {
         lineIdx++;
@@ -871,6 +891,7 @@ void getUsersData(string fileLine,string usersData[])
     fileLine.erase(0, lineIdx + 2);
     lineIdx=0;
     usersData[2] = tempUsers;
+    //cout << tempUsers << endl;
     while (fileLine[lineIdx] != ',')
     {
         lineIdx++;
@@ -878,7 +899,9 @@ void getUsersData(string fileLine,string usersData[])
     tempUsers = fileLine.substr(0, lineIdx);
     fileLine.erase(0, lineIdx + 2);
     usersData[3] = tempUsers;
+    //cout << tempUsers << endl;
     usersData[4] = fileLine;
+    //cout << fileLine << endl;
 
 
 }

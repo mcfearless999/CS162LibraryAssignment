@@ -41,6 +41,7 @@ public:
 	void setFirstName(string firstName); 
 	void setLastName(string lastName); 
 	void setID(string ID);
-	void setEmail(string email);  
+	void setEmail(string email);
+    void setCheckOut(string checkout);
 };
 #endif /* Users_h */

@@ -78,7 +78,10 @@ void Users::AppendToUsersFile()
     outStream << firstName_ << ", "<< lastName_ << ", " << email_ << ", " << ID_ << ", " << endl;
 }
 
-
+void Users::setCheckOut(string checkout)
+{
+    checkOut_ = checkout;
+}
 
 
 
