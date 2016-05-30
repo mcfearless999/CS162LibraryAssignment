@@ -20,8 +20,9 @@ Users userList;
 LinkedList bookList;
 LinkedList usersList;
 
+
 const string defaultBook = "/users/chrism/bookList.txt";
-const string defaultUsers = "/Users/chrism/CS162/LibraryAssignment/LibraryProject/LibraryProject/usersList.txt";
+const string defaultUsers = "/users/chrism/usersList.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -32,8 +33,8 @@ void getUsersData(string fileLine,string usersData[]);
 string getUserLogin();
 Users* loadUsersPointer(string usersData[]);
 void welcome(string userName);
-        Users* findUser(string userName);
-
+Users* findUser(string userName);
+void WriteBookToFile(); 
 void printAllBooks();
 string Register();
 void ChangeUsers();  
@@ -79,7 +80,11 @@ int main() {
     fileFunctions();
 
     currentUser = login();
-    if (cancelCheck(currentUser) == true) return 0;
+    if (cancelCheck(currentUser) == true){
+        ClearUserList();
+        ClearBookList();
+    return 0;
+    }
     welcome(currentUser);
     
     selection = printMenu();
@@ -116,8 +121,9 @@ int main() {
             
         }
         if (selection == 'f'){
-            
+            WriteBookToFile();
             ClearBookList();
+	    
             ClearUserList();
             return 0;
             
@@ -212,15 +218,18 @@ string login()
         }
         if (choice == 'b')
         {
-       userLogin = Register();
+            userLogin = Register();
+            
         choice= ' ';
         }
         if (choice == 'c')
         {
-        userLogin = "XXX";
-        choice = ' ';
+
+        return "XXX";
+
         }
         curUser = findUser(userLogin);
+        
         if (curUser ==0)
         {
             cout << "ERROR: Username not found. Please retry logging in or register" << endl;
@@ -582,13 +591,13 @@ string Register()
 	 
 	Users* tempPtr = loadUsersPointer(usersArray); 
 	tempPtr->Users::AppendToUsersFile(); 
-	return email;
+	return email; 
+
 	
 }
 void ChangeUsers()
 {
-   cout << "Logging in as new user... " << '\n' << endl;
-   cout << "Enter email: " << endl; 
+   cout << "Logging in as new user... " << '\n' << endl; 
    getUserLogin(); 
     
 
@@ -600,13 +609,18 @@ void checkOutBook()
     string bookTitle;
     bookTitle = getBookFromUser();
     int bookId = getBookId(bookTitle);
-    if (inventoryCheck(bookId) == true)
+    if (bookId == 0)
     {
-        cout << "I'm sorry, that book is already checked out" << endl << "Please choose another book" << endl;
-    }else{
-        removeFromLib();
-        checkOut(bookId);
-        cout << "checking out " << bookTitle << endl;
+        cout << "Error: book not found, check your spelling" << endl;;
+        }else{
+            if (inventoryCheck(bookId) == true)
+            {
+                cout << "I'm sorry, that book is already checked out" << endl << "Please choose another book" << endl;
+            }else{
+                removeFromLib();
+                checkOut(bookId);
+                cout << "checking out " << bookTitle << endl;
+            }
     }
 }
 //tested
@@ -703,6 +717,7 @@ void checkOut(int bookId)
         //cout << tempCheck << endl;
         currentUser->CheckBooks(tempCheck);
     }
+
 }
 
 bool inventoryCheck(int bookID)
@@ -884,6 +899,28 @@ void getUsersData(string fileLine,string usersData[])
     //cout << tempUsers << endl;
     usersData[4] = fileLine;
     //cout << fileLine << endl;
+
+
+}
+void WriteBookToFile()
+{
+    ofstream outStream; 
+    outStream.open("/users/chrism/bookListTest.txt",ios_base::out);
+    Node* tempNode;
+    Book* tempBook;
+    tempNode = (Node*) bookList.GetFirstNode();
+    tempBook = (Book*) tempNode->data_;
+    long listLen = bookList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        outStream << tempBook->GetTitle()<< ", " << tempBook->GetAuth() << ", "<<
+        tempBook->GetID() << ", " << tempBook->GetCheckOut() << endl;
+        if (tempNode->next_){
+            tempNode = tempNode->next_;
+        }
+        tempBook = (Book*)tempNode->data_;
+       
+    }
 
 
 }
