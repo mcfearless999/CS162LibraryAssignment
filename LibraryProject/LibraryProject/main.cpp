@@ -245,9 +245,6 @@ bool cancelCheck(string input)
 void fileFunctions()
 {
 
-    string defaultBook = "bookList.txt";
-    string defaultUsers = "usersList.txt";
-
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
     loadBookFile();
@@ -583,7 +580,7 @@ string Register()
 	 
 	Users* tempPtr = loadUsersPointer(usersArray); 
 	tempPtr->Users::AppendToUsersFile(); 
-	return firstName; 
+	return email; 
 	
 }
 void ChangeUsers()
@@ -704,6 +701,7 @@ void checkOut(int bookId)
         //cout << tempCheck << endl;
         currentUser->CheckBooks(tempCheck);
     }
+
 }
 
 bool inventoryCheck(int bookID)
@@ -882,4 +880,3 @@ void getUsersData(string fileLine,string usersData[])
 
 
 }
-
