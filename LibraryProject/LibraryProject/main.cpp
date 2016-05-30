@@ -243,7 +243,16 @@ bool cancelCheck(string input)
 }
 void fileFunctions()
 {
+<<<<<<< Updated upstream
 
+=======
+<<<<<<< HEAD
+    string defaultBook = "bookList.txt";
+    string defaultUsers = "usersList.txt";
+=======
+
+>>>>>>> bf70a3b3ec0bf0a74e116cc3ac54cf40de524964
+>>>>>>> Stashed changes
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
     loadBookFile();
@@ -798,7 +807,15 @@ void loadUserFile()
 }
 Users* loadUsersPointer(string usersData[])
 {
+<<<<<<< Updated upstream
     string RegistrationData[4];
+=======
+<<<<<<< HEAD
+    string RegistrationData[4];  
+=======
+    string RegistrationData[4];
+>>>>>>> bf70a3b3ec0bf0a74e116cc3ac54cf40de524964
+>>>>>>> Stashed changes
     Users* tempUser = new Users;
     tempUser->setFirstName(usersData[0]);
     tempUser->setLastName(usersData[1]);
