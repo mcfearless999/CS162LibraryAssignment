@@ -21,7 +21,7 @@ LinkedList bookList;
 LinkedList usersList;
 
 const string defaultBook = "/users/chrism/bookList.txt";
-const string defaultUsers = "/users/chrism/usersList.txt";
+const string defaultUsers = "/Users/chrism/CS162/LibraryAssignment/LibraryProject/LibraryProject/usersList.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -45,7 +45,6 @@ void fileFunctions();
     void loadBookFile();
     void getBookData(string fileLine,string bookData[]);
     Book* loadBookPointer(string bookData[]);
-    void LoadTextFiles();
     int lineCounter(char fileName[]);
     void loadUserFile();
 
@@ -117,6 +116,7 @@ int main() {
             
         }
         if (selection == 'f'){
+            
             ClearBookList();
             ClearUserList();
             return 0;
@@ -201,25 +201,35 @@ char printMenu()
 
 string login()
 {
-
-    string userLogin;
-    char choice =loginMenu();
-    if (choice == 'a')
-    {
-        userLogin = getUserLogin();
-        choice = ' ';
-    }
-    if (choice == 'b')
-    {
+    Users * curUser = 0;
+    for(;;){
+        string userLogin;
+        char choice =loginMenu();
+        if (choice == 'a')
+        {
+            userLogin = getUserLogin();
+            choice = ' ';
+        }
+        if (choice == 'b')
+        {
        userLogin = Register();
         choice= ' ';
-    }
-    if (choice == 'c')
-    {
+        }
+        if (choice == 'c')
+        {
         userLogin = "XXX";
         choice = ' ';
+        }
+        curUser = findUser(userLogin);
+        if (curUser ==0)
+        {
+            cout << "ERROR: Username not found. Please retry logging in or register" << endl;
+        }else{
+            return userLogin;
+        }
+        
     }
-    return userLogin;
+    
 }
 
 char loginMenu()
@@ -296,33 +306,7 @@ void getUsersFileName(string UsersName){
     
 }
 
-void LoadTextFiles()
-{
-  ifstream inFile; 
-  string defaultUsers;   
-  string data[4]; 
-  string fileLine; 
-  int counter = 0; 
- 
-  getUsersFileName(defaultUsers); 
 
-  //ClearList(); 
- 
-  inFile.open(Users::usersFileList_,ios::in); 
-  int lineNum = lineCounter(Users::usersFileList_);
-  for (int idx = 0; idx < lineNum; idx++)
-  {
-     getline(inFile,fileLine); 
-     //GetData(data, fileLine); 
-  }
-
-  cout << "This worked " << endl; 
-  inFile.close(); 
-  inFile.clear();
-
- 
-}
-     
 
 int lineCounter(char fileName[])
 {
@@ -426,8 +410,6 @@ Book* loadBookPointer(string bookData[])
 
 string getUserLogin()
 {
-    Node* tempNode; 
-    Users* storedUser = 0; 
     string email; 
     cout << "Enter email: " << endl; 
     cin >> email;
@@ -448,7 +430,7 @@ void welcome(string userName)
     int checkedOut[5];
     
     Node* tempNode = (Node*)usersList.GetCurNode();
-    Users* curUser = findUser(userName);
+    Users* curUser = (Users*)tempNode->data_;
     Book* tempBook;
     
     //Display welcome message
@@ -498,7 +480,7 @@ Users* findUser(string userName)
             
         }
     }
-    cout << "Sorry, username not found. Please Register.";
+
     return 0;
 
 
