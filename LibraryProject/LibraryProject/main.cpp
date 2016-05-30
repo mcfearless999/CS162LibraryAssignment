@@ -26,23 +26,26 @@ char printMenu();
 bool cancelCheck(string);
 string login();
 char loginMenu();
-void getBookFileName(string defaultBook);
-void getUsersFileName(string defaultUsers);
-void loadBookFile();
-void getBookData(string fileLine,string bookData[]);
-Book* loadBookPointer(string bookData[]);
+
 string getUserLogin();
 Users* loadUsersPointer(string usersData[]);
-void welcome();
+void welcome(string userName);
 string getCurUser(string email);
 
 void printAllBooks();
 string Register();
 void ChangeUsers();  
-void LoadTextFiles();  
-int lineCounter(char fileName[]);
-void loadUserFile(); 
 
+
+void fileFunctions();
+    void getBookFileName(string defaultBook);
+    void getUsersFileName(string defaultUsers);
+    void loadBookFile();
+    void getBookData(string fileLine,string bookData[]);
+    Book* loadBookPointer(string bookData[]);
+    void LoadTextFiles();
+    int lineCounter(char fileName[]);
+    void loadUserFile();
 
 void checkOutBook();
 string getBookFromUser();
@@ -68,10 +71,13 @@ int main() {
     
     char selection = ' ';
     
+    ClearBookList();
+    ClearUserList();
+    fileFunctions();
 
     currentUser = login();
     if (cancelCheck(currentUser) == true) return 0;
-    //welcome(currentUser);
+    welcome(currentUser);
     
     selection = printMenu();
     for (;;)
@@ -191,11 +197,7 @@ char printMenu()
 
 string login()
 {
-    string defaultBook = "bookList.txt";
-    string defaultUsers = "usersList.txt";
-    getBookFileName(defaultBook);
-    getUsersFileName(defaultUsers);
-    loadBookFile();
+
     string userLogin;
     char choice =loginMenu();
     if (choice == 'a')
@@ -236,6 +238,15 @@ bool cancelCheck(string input)
     if (input == "XXX") cancel = true;
     return cancel;
 }
+void fileFunctions()
+{
+    string defaultBook = "bookList.txt";
+    string defaultUsers = "SusersList.txt";
+    getBookFileName(defaultBook);
+    getUsersFileName(defaultUsers);
+    loadBookFile();
+    loadUserFile();
+}
 
 void getBookFileName(string BookName){
     char* fileName;
@@ -257,6 +268,7 @@ void getBookFileName(string BookName){
     delete [] fileName;
     
 }
+
 
 
 void getUsersFileName(string UsersName){
@@ -428,20 +440,32 @@ string getUserLogin()
 //loads user, prints welcome message, prints books currently checked out
 //completely untested
 //needs fixing
-void welcome()
+void welcome(string userName)
 {
 
     string curBooksOut;
-    string checkedOut[5];
-    //Users* curUser;
-    //curUser= getCurUser();
+    int checkedOut[5];
+    int emptyListCheck =0;
+    Node* tempNode = (Node*)usersList.GetCurNode();
+    Users* curUser = (Users*)tempNode->data_;
+    Book* tempBook;
+    
     //Display welcome message
-    //cout << "Welcome " << CurUser->GetUserName(); << " " << "CurUser lname" << endl;
-    //curBookOut = CurUser->checkOut_;
-    //checkOutDecode(curBookOut, checkedOut);
-    for (int idx = 0; idx <4; idx++)
+    cout << "Welcome " << curUser->GetFirstName() << " " << curUser->GetLastName() << endl;
+    string curBookOut = curUser->GetCheckOut();
+    Decode(curBookOut, checkedOut);
+    for (int idx = 0; idx <5; idx++)
     {
-        cout << checkedOut[idx] << endl;
+        //cout << checkedOut[idx] << endl;
+        tempBook = getBookByID(checkedOut[idx]);
+        if (tempBook !=0)
+        {
+            cout << tempBook->GetTitle()<< endl;
+        }else
+        {
+            emptyListCheck++;
+        }
+        if( emptyListCheck== 4) cout << "You have no books checked out" << endl;
     }
 }
 
@@ -492,11 +516,12 @@ Book*  getBookByID(int bookID)
     Node * tempNode;
     tempNode= (Node*)bookList.GetFirstNode();
     storedBook = (Book*)tempNode->data_;
-    tempNode = (Node*) usersList.GetFirstNode();
     long listLen = bookList.GetListLength();
     for( int idx = 0; idx < (listLen); idx++  )
     {
-        if (bookID == storedBook->GetID() )
+        storedBook = (Book*)tempNode->data_;
+        int tempID =storedBook->GetID();
+        if (bookID == tempID )
         {
             bookList.SetCurNode(tempNode);
             return storedBook;
@@ -504,6 +529,7 @@ Book*  getBookByID(int bookID)
         }if(tempNode->next_)
         {
             tempNode =tempNode->next_;
+            
         }
     }
     
@@ -550,9 +576,10 @@ void checkOutBook()
     string bookTitle;
     bookTitle = getBookFromUser();
     int bookId = getBookId(bookTitle);
-    //int bookId = 13; test value
+    cout << bookId<< endl;
     removeFromLib();
     checkOut(bookId);
+    cout << "checking out " << bookTitle << endl;
 }
 //tested
 //gets title from the user
@@ -575,11 +602,12 @@ int getBookId(string bookTitle)
     Node * tempNode;
     tempNode= (Node*)bookList.GetFirstNode();
     storedBook = (Book*)tempNode->data_;
-    tempNode = (Node*) usersList.GetFirstNode();
     long listLen = bookList.GetListLength();
     for( int idx = 0; idx < (listLen); idx++  )
     {
-        if (bookTitle == storedBook->GetTitle() )
+        storedBook = (Book*)tempNode->data_;
+        string tempTitle = storedBook->GetTitle();
+        if (bookTitle == tempTitle )
         {
             ID = storedBook->GetID();
             return ID;
@@ -622,9 +650,9 @@ void printAllBooks()
 //removes checked out books from checkedout string
 void checkOut(int bookId)
 {
-    //Node * tempNode =(Node*)usersList.GetCurNode();
-    //Users * currentUser = (Users*)tempNode->data_;
-    string checkedOutBooks = /*currentUser->GetCheckOut();*/ "5/23/11/0/0";
+    Node * tempNode =(Node*)usersList.GetCurNode();
+    Users * currentUser = (Users*)tempNode->data_;
+    string checkedOutBooks = currentUser->GetCheckOut(); //"5/23/11/0/0";
     string tempCheck ="";
     int tempArr[5];
     //extract numbers from encoded string
@@ -639,8 +667,8 @@ void checkOut(int bookId)
         
     }
     tempCheck = Encode(tempArr);
-    cout << tempCheck << endl;
-    //currentUser->CheckBooks(tempCheck);
+    //cout << tempCheck << endl;
+    currentUser->CheckBooks(tempCheck);
     
 }
 //Untested
