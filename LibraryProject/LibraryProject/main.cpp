@@ -432,7 +432,7 @@ string getUserLogin()
     	
     getCurUser(email); 
     
-    return 0; 
+    return email; 
     
     
 }
@@ -555,29 +555,27 @@ Book*  getBookByID(int bookID)
 //We are going to need to have this return the username as a string
 string Register()
 {
-   
- 	Users* User = new Users;
-	string fname; 
-	string lname; 
-	string email; 
-	string id;  
- 	cout << "Enter your First Name: " << endl; 
-	cin >> fname; 
- 	User->setFirstName(fname); 
-        cout << "Enter your Last Name: " << endl; 
-	cin >> lname; 
-	User->setLastName(lname); 
+        string email; 
+	string id; 
+	string firstName; 
+	string lastName; 
+ 	cout << "Enter your First Name: " << endl;
+	cin.clear();
+        cin.ignore(1); 
+	getline(cin,firstName);  
+        cout << "Enter your Last Name: " << endl;
+	cin.clear();
+        cin.ignore(1); 
+	getline(cin,lastName);  
 	cout << "Enter your email: " << endl; 
-	cin >> email; 
-	User->setEmail(email);
-  
-        usersList.AddLinkToBack(User);
- 	usersList.GetLastNode(); 
-	
-	
-	return email; 	
-        
-	
+	cin.clear();
+        cin.ignore(1);
+	getline(cin,email); 
+	cout << "Enter your ID Number: " << endl;
+	cin.clear();
+        cin.ignore(1); 
+	getline(cin,id);   
+	return firstName;  
 }
 void ChangeUsers()
 {
@@ -798,11 +796,15 @@ void loadUserFile()
 }
 Users* loadUsersPointer(string usersData[])
 {
+    string RegistrationData[4]; 
+    Register(); 
     Users* tempUser = new Users;
     tempUser->setFirstName(usersData[0]);
     tempUser->setLastName(usersData[1]);
     tempUser->setEmail(usersData[2]);
     tempUser->setID(usersData[3]);
+
+    tempUser->Users::AppendToUsersFile(); 
 
     return tempUser;
 }
