@@ -20,8 +20,8 @@ Users userList;
 LinkedList bookList;
 LinkedList usersList;
 
-const string defaultBook = "/users/chrism/bookList.txt";
-const string defaultUsers = "/users/chrism/usersList.txt";
+const string defaultBook = "bookList.txt";
+const string defaultUsers = "usersList.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -32,8 +32,8 @@ void getUsersData(string fileLine,string usersData[]);
 string getUserLogin();
 Users* loadUsersPointer(string usersData[]);
 void welcome(string userName);
-        Users* findUser(string userName);
-
+Users* findUser(string userName);
+void WriteBookToFile(); 
 void printAllBooks();
 string Register();
 void ChangeUsers();  
@@ -118,6 +118,7 @@ int main() {
         }
         if (selection == 'f'){
             ClearBookList();
+	    WriteBookToFile(); 
             ClearUserList();
             return 0;
             
@@ -600,17 +601,13 @@ string Register()
 	 
 	Users* tempPtr = loadUsersPointer(usersArray); 
 	tempPtr->Users::AppendToUsersFile(); 
-<<<<<<< HEAD
 	return email; 
-=======
-	return email;
->>>>>>> 47327f962c648175127b0f6fe2d57e15701a10a4
+
 	
 }
 void ChangeUsers()
 {
-   cout << "Logging in as new user... " << '\n' << endl;
-   cout << "Enter email: " << endl; 
+   cout << "Logging in as new user... " << '\n' << endl; 
    getUserLogin(); 
     
 
@@ -910,3 +907,26 @@ void getUsersData(string fileLine,string usersData[])
 
 
 }
+void WriteBookToFile()
+{
+    ofstream outStream; 
+    outStream.open("bookListTest.txt",ios_base::out); 
+    Node* tempNode;
+    Book* tempBook;
+    tempNode = (Node*) bookList.GetFirstNode();
+    tempBook = (Book*) tempNode->data_;
+    long listLen = bookList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        outStream << tempBook->GetTitle()<< ", " << tempBook->GetAuth() << ", "<<
+        tempBook->GetID() << ", " << tempBook->GetCheckOut() << endl;
+        if (tempNode->next_){
+            tempNode = tempNode->next_;
+        }
+        tempBook = (Book*)tempNode->data_;
+       
+    }
+
+
+}
+
