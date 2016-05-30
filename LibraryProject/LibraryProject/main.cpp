@@ -28,7 +28,7 @@ char printMenu();
 bool cancelCheck(string);
 string login();
 char loginMenu();
-
+void getUsersData(string fileLine,string usersData[]);
 string getUserLogin();
 Users* loadUsersPointer(string usersData[]);
 void welcome(string userName);
@@ -565,23 +565,26 @@ string Register()
 	string id; 
 	string firstName; 
 	string lastName; 
- 	cout << "Enter your First Name: " << endl;
-	cin.clear();
-        cin.ignore(1); 
-	getline(cin,firstName);  
+ 	string usersArray[4];
+	cout << "Enter your First Name: " << endl;
+	cin >> firstName; 
         cout << "Enter your Last Name: " << endl;
-	cin.clear();
-        cin.ignore(1); 
-	getline(cin,lastName);  
+	cin >> lastName;  
 	cout << "Enter your email: " << endl; 
-	cin.clear();
-        cin.ignore(1);
-	getline(cin,email); 
+	cin >> email;  
 	cout << "Enter your ID Number: " << endl;
-	cin.clear();
-        cin.ignore(1); 
-	getline(cin,id);   
-	return firstName;  
+	cin >> id; 
+	 
+        
+	usersArray[0] = firstName; 
+	usersArray[1] = lastName; 
+	usersArray[2] = email; 
+	usersArray[3] = id; 
+	 
+	Users* tempPtr = loadUsersPointer(usersArray); 
+	tempPtr->Users::AppendToUsersFile(); 
+	return firstName; 
+	
 }
 void ChangeUsers()
 {
@@ -829,18 +832,54 @@ void loadUserFile()
 }
 Users* loadUsersPointer(string usersData[])
 {
-
-    string RegistrationData[4];
     Users* tempUser = new Users;
     tempUser->setFirstName(usersData[0]);
     tempUser->setLastName(usersData[1]);
     tempUser->setEmail(usersData[2]);
     tempUser->setID(usersData[3]);
 
-    tempUser->Users::AppendToUsersFile(); 
+    //tempUser->Users::AppendToUsersFile(); 
+    return tempUser;  
 
-    return tempUser;
 }
+void getUsersData(string fileLine,string usersData[])
+{
+    string tempUsers;
+    int lineIdx = 0;
+
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempUsers = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    usersData[0] = tempUsers;
+    lineIdx=0;
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempUsers = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    lineIdx=0;
+    usersData[1] = tempUsers;
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempUsers = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    lineIdx=0;
+    usersData[2] = tempUsers;
+    while (fileLine[lineIdx] != ',')
+    {
+        lineIdx++;
+    }
+    tempUsers = fileLine.substr(0, lineIdx);
+    fileLine.erase(0, lineIdx + 2);
+    usersData[3] = tempUsers;
+    usersData[4] = fileLine;
 
 
+}
 

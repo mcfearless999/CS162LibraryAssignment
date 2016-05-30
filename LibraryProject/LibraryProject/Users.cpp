@@ -17,7 +17,7 @@ Users::Users()
 	firstName_ = ""; 
 	lastName_ = ""; 
  	email_ = ""; 
-    ID_ = "";  
+        ID_ = "";  
 	checkOut_= "0/0/0/0/0";
 }
 
@@ -75,7 +75,7 @@ void Users::AppendToUsersFile()
 {
     ofstream outStream;
     outStream.open(usersFileList_,ios_base::app);
-    outStream << usersFileList_ << endl;
+    outStream << firstName_ << ", "<< lastName_ << ", " << email_ << ", " << ID_ << ", " << endl;
 }
 
 
