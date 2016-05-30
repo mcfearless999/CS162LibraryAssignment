@@ -55,6 +55,7 @@ void removeFromLib();
 
 void Decode(string checkOutString, int tempArr[]);
 string Encode(int tempArr[]);
+int checkOutList(int tempArr[]);
 
 Book* getBookByID(int bookID);
 void checkOut(int bookId);
@@ -445,7 +446,7 @@ void welcome(string userName)
 
     string curBooksOut;
     int checkedOut[5];
-    int emptyListCheck =0;
+
     Node* tempNode = (Node*)usersList.GetCurNode();
     Users* curUser = (Users*)tempNode->data_;
     Book* tempBook;
@@ -454,18 +455,21 @@ void welcome(string userName)
     cout << "Welcome " << curUser->GetFirstName() << " " << curUser->GetLastName() << endl;
     string curBookOut = curUser->GetCheckOut();
     Decode(curBookOut, checkedOut);
+    int emptyListCheck =checkOutList(checkedOut);
+    if (emptyListCheck ==0)
+    {
+        cout << "No Books currently checked out" << endl;
+    }else{
+    
     for (int idx = 0; idx <5; idx++)
     {
         //cout << checkedOut[idx] << endl;
-        tempBook = getBookByID(checkedOut[idx]);
-        if (tempBook !=0)
-        {
-            cout << tempBook->GetTitle()<< endl;
-        }else
-        {
-            emptyListCheck++;
+            tempBook = getBookByID(checkedOut[idx]);
+            if (tempBook !=0)
+            {
+                cout << tempBook->GetTitle()<< endl;
+            }
         }
-        if( emptyListCheck== 4) cout << "You have no books checked out" << endl;
     }
 }
 
@@ -503,6 +507,18 @@ string Encode(int tempArr[])
     }
     encodedString.pop_back();
     return encodedString;
+}
+
+int checkOutList(int tempArr[])
+{
+    int checkedOutCount = 0;
+    for (int idx =0; idx < 5; idx++)
+    {
+        if (tempArr[idx] !=0) checkedOutCount++;
+    }
+    
+    
+    return checkedOutCount;
 }
 
 //untested
