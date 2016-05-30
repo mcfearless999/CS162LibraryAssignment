@@ -54,6 +54,7 @@ string getBookFromUser();
 int getBookId(string bookTitle);
 void checkOut(int bookId);
 void removeFromLib();
+bool inventoryCheck(int bookId);
 
 void Decode(string checkOutString, int tempArr[]);
 string Encode(int tempArr[]);
@@ -243,16 +244,10 @@ bool cancelCheck(string input)
 }
 void fileFunctions()
 {
-<<<<<<< Updated upstream
 
-=======
-<<<<<<< HEAD
     string defaultBook = "bookList.txt";
     string defaultUsers = "usersList.txt";
-=======
 
->>>>>>> bf70a3b3ec0bf0a74e116cc3ac54cf40de524964
->>>>>>> Stashed changes
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
     loadBookFile();
@@ -603,10 +598,14 @@ void checkOutBook()
     string bookTitle;
     bookTitle = getBookFromUser();
     int bookId = getBookId(bookTitle);
-    cout << bookId<< endl;
-    removeFromLib();
-    checkOut(bookId);
-    cout << "checking out " << bookTitle << endl;
+    if (inventoryCheck(bookId) == true)
+    {
+        cout << "I'm sorry, that book is already checked out" << endl << "Please choose another book" << endl;
+    }else{
+        removeFromLib();
+        checkOut(bookId);
+        cout << "checking out " << bookTitle << endl;
+    }
 }
 //tested
 //gets title from the user
@@ -684,20 +683,36 @@ void checkOut(int bookId)
     int tempArr[5];
     //extract numbers from encoded string
     Decode(checkedOutBooks,tempArr);
-    for (int idx = 0; idx< 5; idx++)
+    if (checkOutList(tempArr) ==5)
     {
-        if(tempArr[idx] == 0)
+        cout << "I'm sorry you need to check in books before you can check out anymore" << endl;
+    }else{
+        for (int idx = 0; idx< 5; idx++)
         {
-            tempArr[idx] = bookId;
-            bookId = 0;
+            if(tempArr[idx] == 0)
+            {
+                tempArr[idx] = bookId;
+                bookId = 0;
+            }
+            
         }
         
+        tempCheck = Encode(tempArr);
+        //cout << tempCheck << endl;
+        currentUser->CheckBooks(tempCheck);
     }
-    tempCheck = Encode(tempArr);
-    //cout << tempCheck << endl;
-    currentUser->CheckBooks(tempCheck);
-    
 }
+
+bool inventoryCheck(int bookID)
+{
+    bool check = true;
+    getBookByID(bookID);
+    Node* tempBookNode = (Node*)bookList.GetCurNode();
+    Book* curBook = (Book*)tempBookNode->data_;
+    if (curBook->GetCheckOut() == "0") check = false;
+    return check;
+}
+
 //Untested
 void removeFromLib()
 {
@@ -746,41 +761,48 @@ int checkInPrompt(int bookIDs[])
 {
     int checkInBook = 0;
     Book * tempBook;
+    
+    cout << "Please choose which book you wish to check in:" << endl;
+    cout << "Enter 0 to cancel" << endl;
+    tempBook = getBookByID(bookIDs[0]);
     if (bookIDs[0] !=0)
     {
-        cout << "Please choose which book you wish to check in:" << endl;
-        cout << "Enter 0 to cancel" << endl;
-        tempBook = getBookByID(bookIDs[0]);
         cout << "1) " << tempBook->GetTitle() << endl;
-        if (bookIDs[1] !=0)
-        {
-            tempBook = getBookByID(bookIDs[1]);
-            cout << "2) " << tempBook->GetTitle() << endl;
-            if (bookIDs[2] !=0)
-            {
-                tempBook = getBookByID(bookIDs[2]);
-                cout << "3) " << tempBook->GetTitle() << endl;
-                if (bookIDs[3] !=0)
-                {
-                    tempBook = getBookByID(bookIDs[3]);
-                    cout << "4) " << tempBook->GetTitle() << endl;
-                    if (bookIDs[4] !=0)
-                    {
-                        tempBook = getBookByID(bookIDs[4]);
-                        cout << "5) " << tempBook->GetTitle() << endl;
-                    }
-                }
-            }
-        }
-        cin >> checkInBook;
     }
+    if (bookIDs[1] !=0)
+    {
+        tempBook = getBookByID(bookIDs[1]);
+        cout << "2) " << tempBook->GetTitle() << endl;
+    }
+    if (bookIDs[2] !=0)
+    {
+        tempBook = getBookByID(bookIDs[2]);
+        cout << "3) " << tempBook->GetTitle() << endl;
+    }
+    if (bookIDs[3] !=0)
+    {
+        tempBook = getBookByID(bookIDs[3]);
+        cout << "4) " << tempBook->GetTitle() << endl;
+    }
+    if (bookIDs[4] !=0)
+    {
+        tempBook = getBookByID(bookIDs[4]);
+        cout << "5) " << tempBook->GetTitle() << endl;
+    }
+    
+    
+    
+    cin >> checkInBook;
+    
     if(checkInBook !=0) checkInBook = bookIDs[(checkInBook-1)];
     
     return checkInBook;
 }
+
+
 void loadUserFile()
 {
-    fstream inFile; 
+    fstream inFile;
     string fileLine;
     Users* UserPtr;
     string UserData[4];
@@ -807,15 +829,8 @@ void loadUserFile()
 }
 Users* loadUsersPointer(string usersData[])
 {
-<<<<<<< Updated upstream
+
     string RegistrationData[4];
-=======
-<<<<<<< HEAD
-    string RegistrationData[4];  
-=======
-    string RegistrationData[4];
->>>>>>> bf70a3b3ec0bf0a74e116cc3ac54cf40de524964
->>>>>>> Stashed changes
     Users* tempUser = new Users;
     tempUser->setFirstName(usersData[0]);
     tempUser->setLastName(usersData[1]);
