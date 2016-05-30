@@ -20,6 +20,8 @@ Users userList;
 LinkedList bookList;
 LinkedList usersList;
 
+const string defaultBook = "/users/chrism/bookList.txt";
+const string defaultUsers = "/users/chrism/usersList.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -241,8 +243,7 @@ bool cancelCheck(string input)
 }
 void fileFunctions()
 {
-    string defaultBook = "bookList.txt";
-    string defaultUsers = "SusersList.txt";
+
     getBookFileName(defaultBook);
     getUsersFileName(defaultUsers);
     loadBookFile();
@@ -456,13 +457,14 @@ void welcome(string userName)
     string curBookOut = curUser->GetCheckOut();
     Decode(curBookOut, checkedOut);
     int emptyListCheck =checkOutList(checkedOut);
-    if (emptyListCheck ==0)
+    if (emptyListCheck == 0)
     {
         cout << "No Books currently checked out" << endl;
     }else{
     
     for (int idx = 0; idx <5; idx++)
     {
+        cout << "you curently have these books checked out" << endl;
         //cout << checkedOut[idx] << endl;
             tempBook = getBookByID(checkedOut[idx]);
             if (tempBook !=0)
@@ -796,8 +798,7 @@ void loadUserFile()
 }
 Users* loadUsersPointer(string usersData[])
 {
-    string RegistrationData[4]; 
-    Register(); 
+    string RegistrationData[4];
     Users* tempUser = new Users;
     tempUser->setFirstName(usersData[0]);
     tempUser->setLastName(usersData[1]);
