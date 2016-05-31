@@ -75,7 +75,8 @@ void Users::AppendToUsersFile()
 {
     ofstream outStream;
     outStream.open(usersFileList_,ios_base::app);
-    outStream << firstName_ << ", "<< lastName_ << ", " << email_ << ", " << ID_ << ", " << endl;
+    cout << endl;
+    outStream << firstName_ << ", "<< lastName_ << ", " << ID_ << ", " << email_ << ", " << checkOut_;
 }
 
 void Users::setCheckOut(string checkout)

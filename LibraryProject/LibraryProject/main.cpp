@@ -21,13 +21,10 @@ LinkedList bookList;
 LinkedList usersList;
 
 
-<<<<<<< HEAD
-const string defaultBook = "bookList.txt";
-const string defaultUsers = "usersList.txt";
-=======
+
 const string defaultBook = "/users/chrism/bookList.txt";
 const string defaultUsers = "/users/chrism/usersList.txt";
->>>>>>> d90011370639f13b614fb352a939f63d631f7895
+
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -128,11 +125,9 @@ int main() {
         }   
         else
 	{
-<<<<<<< HEAD
+
 	   selection = printMenu(); 
-=======
-        selection = printMenu();
->>>>>>> d90011370639f13b614fb352a939f63d631f7895
+
         }
     
     }
@@ -225,7 +220,8 @@ string login()
         if (choice == 'b')
         {
             userLogin = Register();
-            if (curUser ==0)
+            curUser = findUser(userLogin);
+            if (userLogin=="XXX")
             {
                 cout << "ERROR: That email is already registered to another user" << endl;
             }
@@ -578,7 +574,7 @@ string Register()
 	string id; 
 	string firstName; 
 	string lastName; 
- 	string usersArray[4];
+ 	string usersArray[5];
 	cout << "Enter your First Name: " << endl;
 	cin >> firstName; 
         cout << "Enter your Last Name: " << endl;
@@ -591,18 +587,20 @@ string Register()
         
 	usersArray[0] = firstName; 
 	usersArray[1] = lastName; 
-	usersArray[2] = email; 
-	usersArray[3] = id; 
+	usersArray[2] = id;
+	usersArray[3] = email;
+    usersArray[4] = "0/0/0/0/0";
 	
 	Users* tempUser = findUser(email); 
         if (tempUser != 0)
 	{
-
+        
 	  return "XXX";
 	}
 	else
 	{ 
-	Users* tempPtr = loadUsersPointer(usersArray); 
+	Users* tempPtr = loadUsersPointer(usersArray);
+    usersList.AddLinkToBack(tempPtr);
 	tempPtr->Users::AppendToUsersFile(); 
 	return email; 
 	}
@@ -751,7 +749,7 @@ void removeFromLib()
     Book* curBook = (Book*) tempBookNode->data_;
     Users* curUser = (Users*) tempUserNode->data_;
     
-    string userName = curUser->GetUserName();
+    string userName = curUser->GetEmail();
     curBook->SetCheckout(userName);
 }
 
@@ -929,8 +927,10 @@ void WriteBookToFile()
     long listLen = bookList.GetListLength();
     for( int idx = 0; idx < (listLen); idx++  )
     {
+        string temp = tempBook->GetCheckOut();
         outStream << tempBook->GetTitle()<< ", " << tempBook->GetAuth() << ", "<<
         tempBook->GetID() << ", " << tempBook->GetCheckOut() << endl;
+        
         if (tempNode->next_){
             tempNode = tempNode->next_;
         }
