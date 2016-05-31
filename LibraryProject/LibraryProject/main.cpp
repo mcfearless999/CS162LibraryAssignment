@@ -778,6 +778,7 @@ void checkInBook()
             }
             curBook->SetCheckout("0");
             string checkInString = Encode(bookIDs);
+            curBook = getBookByID(checkInID);
             curUser->CheckBooks(checkInString);
             cout << curBook->GetTitle() << " checked in" << endl;
         }
