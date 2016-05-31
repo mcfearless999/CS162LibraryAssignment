@@ -21,8 +21,8 @@ LinkedList bookList;
 LinkedList usersList;
 
 
-const string defaultBook = "bookList.txt";
-const string defaultUsers = "List.txt";
+const string defaultBook = "/users/chrism/bookList.txt";
+const string defaultUsers = "/users/chrism/usersList.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -93,9 +93,7 @@ int main() {
         if (selection == 'a')
         {
             //print book list
-
-            printAllBooks();             
-
+            printAllBooks();
             selection = ' ';
         }
         if (selection == 'b')
@@ -117,7 +115,7 @@ int main() {
         }
         if (selection == 'e')
 	{
-            WriteBookToFile(); 
+        WriteBookToFile();
 	    ClearBookList(); 
 	    ClearUserList();	
 	    return 0; 	
@@ -125,7 +123,7 @@ int main() {
         }   
         else
 	{
-
+        selection = printMenu();
         }
     
     }
@@ -201,38 +199,43 @@ char printMenu()
 string login()
 {
     Users * curUser = 0;
-    for(;;){
-        string userLogin;
+    string userLogin;
+    while(curUser == 0){
+        
         char choice =loginMenu();
         if (choice == 'a')
         {
             userLogin = getUserLogin();
+            curUser = findUser(userLogin);
+            if (curUser ==0)
+            {
+                cout << "ERROR: Username not found. Please retry logging in or register" << endl;
+            }
             choice = ' ';
         }
         if (choice == 'b')
         {
             userLogin = Register();
-            
+            if (curUser ==0)
+            {
+                cout << "ERROR: That email is already registered to another user" << endl;
+            }
         choice= ' ';
         }
         if (choice == 'c')
         {
-
         return "XXX";
 
         }
-        curUser = findUser(userLogin);
-        
-        if (curUser ==0)
-        {
-            cout << "ERROR: Username not found. Please retry logging in or register" << endl;
-        }else{
-            return userLogin;
-        }
         
     }
-    
+   
+        
+        
+        return userLogin;
 }
+
+
 
 char loginMenu()
 {
@@ -585,8 +588,8 @@ string Register()
 	Users* tempUser = findUser(email); 
         if (tempUser != 0)
 	{
-	  cout << "That user is already registered " << endl;
-	  return 0;  
+
+	  return "XXX";
 	}
 	else
 	{ 
@@ -807,16 +810,19 @@ int checkInPrompt(int bookIDs[])
         tempBook = getBookByID(bookIDs[4]);
         cout << "5) " << tempBook->GetTitle() << endl;
     }
+        
     
-    
-    
+    cout << "-> ";
     cin >> checkInBook;
-    
+    if (checkInBook < 0 || checkInBook > 5){
+            cout << "ERROR: unrecognized option" << endl;
+            checkInBook=0;
+    }
     if(checkInBook !=0) checkInBook = bookIDs[(checkInBook-1)];
     
     return checkInBook;
 }
-
+    
 
 void loadUserFile()
 {
