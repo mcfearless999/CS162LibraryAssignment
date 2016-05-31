@@ -22,7 +22,7 @@ LinkedList usersList;
 
 
 const string defaultBook = "bookList.txt";
-const string defaultUsers = "List.txt";
+const string defaultUsers = "usersList.txt";
 void ClearBookList();
 void ClearUserList();
 char printMenu();
@@ -125,7 +125,7 @@ int main() {
         }   
         else
 	{
-
+	   selection = printMenu(); 
         }
     
     }
@@ -417,7 +417,7 @@ string getUserLogin()
     cin >> email;
     
     return email; 
-    
+     
     
 }
 
@@ -599,9 +599,9 @@ string Register()
 void ChangeUsers()
 {
    cout << "Logging in as new user... " << '\n' << endl; 
-   getUserLogin(); 
-    
-
+   string email = getUserLogin();   
+   findUser(email);
+   welcome(email);  
 }
 //higher level function, needs run through
 //checks out books to the current user
