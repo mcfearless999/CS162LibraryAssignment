@@ -1,14 +1,10 @@
-//
-//  main.cpp
-//  LibraryProject
-//
-//  Created by Chris M on 5/17/16.
-//  Copyright © 2016 Chris McPherson. All rights reserved.
-//
+ //Chris McPherson G03852060
+//working with Marcel Delisser
 
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include "Book.h"
 #include "Users.h"
 #include "LinkedList.h"
@@ -67,6 +63,7 @@ void checkOut(int bookId);
 
 void checkInBook();
 int checkInPrompt(int bookIDs[]);
+void WriteUsersToFile();
 
 
 
@@ -106,7 +103,8 @@ int main() {
         }
         if (selection == 'c')
         {
-            checkInBook(); 
+            //check in book from the user
+            checkInBook();
             selection = ' ';
         }
         if (selection == 'd')
@@ -115,9 +113,12 @@ int main() {
 	    ChangeUsers(); 
             selection = ' ';
         }
+        
         if (selection == 'e')
 	{
+        //quit program
         WriteBookToFile();
+        WriteUsersToFile();
 	    ClearBookList(); 
 	    ClearUserList();	
 	    return 0; 	
@@ -199,7 +200,7 @@ char printMenu()
     return choice;
 }
 
-
+//takes different options from the user in order to login, or register new user
 string login()
 {
     Users * curUser = 0;
@@ -209,6 +210,7 @@ string login()
         char choice =loginMenu();
         if (choice == 'a')
         {
+            //logs in with an email stored in the text file
             userLogin = getUserLogin();
             curUser = findUser(userLogin);
             if (curUser ==0)
@@ -219,6 +221,7 @@ string login()
         }
         if (choice == 'b')
         {
+            //adds a new user to the link list and appends to file
             userLogin = Register();
             curUser = findUser(userLogin);
             if (userLogin=="XXX")
@@ -241,7 +244,7 @@ string login()
 }
 
 
-
+//displays options and takes input from the user
 char loginMenu()
 {
     char choice = ' ';
@@ -255,13 +258,14 @@ char loginMenu()
     cin >> choice;
     return choice;
 }
-
+//allows user to cancel in the login menu, not fully implemented for the entire program
 bool cancelCheck(string input)
 {
     bool cancel = false;
     if (input == "XXX") cancel = true;
     return cancel;
 }
+//higher level function for all the file loading functions
 void fileFunctions()
 {
 
@@ -270,7 +274,7 @@ void fileFunctions()
     loadBookFile();
     loadUserFile();
 }
-
+//checks the default path for the book file, if invalid, prompts user for new file path
 void getBookFileName(string BookName){
     char* fileName;
     fileName = new char[256]; //new*
@@ -293,7 +297,7 @@ void getBookFileName(string BookName){
 }
 
 
-
+//checks the default path for the users file, if invalid, prompts user for new file path
 void getUsersFileName(string UsersName){
     char* fileName;
     fileName = new char[256]; //new*
@@ -317,7 +321,7 @@ void getUsersFileName(string UsersName){
 }
 
 
-
+//opens file, counts number of lines, then closes file
 int lineCounter(char fileName[])
 {
     int linecount = 0;
@@ -335,6 +339,7 @@ int lineCounter(char fileName[])
     return linecount;
 }
 
+//reads in lines from the book file, parses lines, dynamically creates book objects and loads into linked list
 void loadBookFile()
 {
     fstream inFile;
@@ -362,6 +367,7 @@ void loadBookFile()
     }
     cout << "File loaded, " <<  lineNum << " books loaded" << endl;
 }
+//parses the lines from the book list file
 void getBookData(string fileLine,string bookData[])
 {
     string tempWord;
@@ -402,6 +408,7 @@ void getBookData(string fileLine,string bookData[])
     
     
 }
+//loads parsed data into dynamically created book object
 Book* loadBookPointer(string bookData[])
 {
     Book* tempBook = new Book;
@@ -416,7 +423,7 @@ Book* loadBookPointer(string bookData[])
 
 
 
-//unfinished
+//gets users email through a prompt
 
 string getUserLogin()
 {
@@ -431,8 +438,7 @@ string getUserLogin()
 
 
 //loads user, prints welcome message, prints books currently checked out
-//completely untested
-//needs fixing
+
 void welcome(string userName)
 {
 
@@ -465,7 +471,7 @@ void welcome(string userName)
     }
 }
 
-//needs some work
+//searches through the linked list and returns the first book with a matching title to the parameter
 Users* findUser(string userName)
 {
     string title;
@@ -495,8 +501,7 @@ Users* findUser(string userName)
 
 
 }
-//stores book titles in an array after searching through the list for each one
-//tested
+//takes the checked out book string, parses it, and stores each element in an array
 void Decode(string checkOutString, int tempArr[])
 {
     
@@ -511,7 +516,7 @@ void Decode(string checkOutString, int tempArr[])
         checkOutString.erase(0,lineIdx+1);
     }
 }
-
+//takes array and encodes elements into a check out string
 string Encode(int tempArr[])
 {
     string encodedString;
@@ -524,6 +529,7 @@ string Encode(int tempArr[])
     return encodedString;
 }
 
+//checks the number of books checked out by user
 int checkOutList(int tempArr[])
 {
     int checkedOutCount = 0;
@@ -536,7 +542,7 @@ int checkOutList(int tempArr[])
     return checkedOutCount;
 }
 
-//untested
+
 //searches through book list for title based on ID
 Book*  getBookByID(int bookID)
 {
@@ -606,6 +612,7 @@ string Register()
 	}
 	
 }
+//allows user to change usernames
 void ChangeUsers()
 {
    cout << "Logging in as new user... " << '\n' << endl; 
@@ -634,7 +641,7 @@ void checkOutBook()
             }
     }
 }
-//tested
+
 //gets title from the user
 string getBookFromUser()
 {
@@ -646,8 +653,8 @@ string getBookFromUser()
     return title;
 }
 
-//untested
-//searches through linked list by title
+
+//searches through linked list by title and returns the book ID
 int getBookId(string bookTitle)
 {
     int ID;
@@ -672,7 +679,7 @@ int getBookId(string bookTitle)
     }
     return 0;
 }
-//tested, works
+//prints all books to the console, hides which user has checked out which book
 void printAllBooks()
 {
     Node* tempNode;
@@ -699,13 +706,13 @@ void printAllBooks()
     
 }
 
-//mechanics tested
-//removes checked out books from checkedout string
+
+//decodes checkout string, changes it to store a book that is checked out, re-encodes string, and stores it with the user
 void checkOut(int bookId)
 {
     Node * tempNode =(Node*)usersList.GetCurNode();
     Users * currentUser = (Users*)tempNode->data_;
-    string checkedOutBooks = currentUser->GetCheckOut(); //"5/23/11/0/0";
+    string checkedOutBooks = currentUser->GetCheckOut();
     string tempCheck ="";
     int tempArr[5];
     //extract numbers from encoded string
@@ -730,7 +737,7 @@ void checkOut(int bookId)
     }
 
 }
-
+//checks if the book is checked out or not
 bool inventoryCheck(int bookID)
 {
     bool check = true;
@@ -741,7 +748,7 @@ bool inventoryCheck(int bookID)
     return check;
 }
 
-//Untested
+//sets the checked out string on the book to whoever is checking it out
 void removeFromLib()
 {
     Node* tempBookNode = (Node*)bookList.GetCurNode();
@@ -752,7 +759,7 @@ void removeFromLib()
     string userName = curUser->GetEmail();
     curBook->SetCheckout(userName);
 }
-
+//displays books currently checked out, allows user to choose which book to check in through a menu
 void checkInBook()
 {
     int bookIDs[5];
@@ -776,16 +783,17 @@ void checkInBook()
                 //removing book from users list
                 if (bookIDs[idx] == checkInID) bookIDs[idx]=0;
             }
+
+            curBook = getBookByID(checkInID);
             curBook->SetCheckout("0");
             string checkInString = Encode(bookIDs);
-            curBook = getBookByID(checkInID);
             curUser->CheckBooks(checkInString);
             cout << curBook->GetTitle() << " checked in" << endl;
         }
         
     }
 }
-
+//displays check in menu
 int checkInPrompt(int bookIDs[])
 {
     int checkInBook = 0;
@@ -831,7 +839,7 @@ int checkInPrompt(int bookIDs[])
     return checkInBook;
 }
     
-
+//
 void loadUserFile()
 {
     fstream inFile;
@@ -850,15 +858,16 @@ void loadUserFile()
     inFile.open(Users::usersFileList_,ios::in);
     for (int idx = 0; idx < lineNum; idx++)
     {
-        //read data from each song file
+        //read data from each user
         getline(inFile,fileLine);
         getUsersData(fileLine,UserData);
-        //dynamically create list of songs from mp3 collection
+        //dynamically create list of users from users file
         UserPtr = loadUsersPointer(UserData);
         usersList.AddLinkToBack(UserPtr);
     }
     cout << "File loaded, " <<  lineNum << " users loaded" << endl;
 }
+//dynamically create User and load data values
 Users* loadUsersPointer(string usersData[])
 {
     Users* tempUser = new Users;
@@ -872,6 +881,7 @@ Users* loadUsersPointer(string usersData[])
     return tempUser;  
 
 }
+//parses data from the string that is being loaded from the file
 void getUsersData(string fileLine,string usersData[])
 {
     string tempUsers;
@@ -917,10 +927,11 @@ void getUsersData(string fileLine,string usersData[])
 
 
 }
+//writes the book linked list to the book list tile
 void WriteBookToFile()
 {
     ofstream outStream; 
-    outStream.open("/users/chrism/bookListTest.txt",ios_base::out);
+    outStream.open(Book::bookFileList_,ios_base::out);
     Node* tempNode;
     Book* tempBook;
     tempNode = (Node*) bookList.GetFirstNode();
@@ -930,7 +941,7 @@ void WriteBookToFile()
     {
         string temp = tempBook->GetCheckOut();
         outStream << tempBook->GetTitle()<< ", " << tempBook->GetAuth() << ", "<<
-        tempBook->GetID() << ", " << tempBook->GetCheckOut() << endl;
+        tempBook->GetPub() << ", " << tempBook->GetID() << ", " << tempBook->GetCheckOut() << endl;
         
         if (tempNode->next_){
             tempNode = tempNode->next_;
@@ -940,5 +951,29 @@ void WriteBookToFile()
     }
 
 
+}
+void WriteUsersToFile()
+{
+    ofstream outStream;
+    outStream.open(Users::usersFileList_,ios_base::out);
+    Node* tempNode;
+    Users* tempUsers;
+    tempNode = (Node*) usersList.GetFirstNode();
+    tempUsers = (Users*)tempNode->data_;
+    long listLen = usersList.GetListLength();
+    for( int idx = 0; idx < (listLen); idx++  )
+    {
+        string temp = tempUsers->GetCheckOut();
+        outStream << tempUsers->GetFirstName() << ", " << tempUsers->GetLastName() << ", "<<
+        tempUsers->GetID() << ", " << tempUsers->GetEmail() << ", " << tempUsers->GetCheckOut() << endl;
+        
+        if (tempNode->next_){
+            tempNode = tempNode->next_;
+        }
+        tempUsers = (Users*)tempNode->data_;
+        
+    }
+    
+    
 }
 
