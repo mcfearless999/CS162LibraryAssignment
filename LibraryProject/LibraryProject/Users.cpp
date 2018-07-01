@@ -7,7 +7,7 @@
 //
 
 #include "Users.h"
-
+#include <fstream>
 
 char Users::usersFileList_[512] = "";
 string Users::currentUser_ = "";
@@ -17,7 +17,7 @@ Users::Users()
 	firstName_ = ""; 
 	lastName_ = ""; 
  	email_ = ""; 
-    ID_ = "";  
+        ID_ = "";  
 	checkOut_= "0/0/0/0/0";
 }
 
@@ -67,16 +67,22 @@ void Users::setEmail(string email)
 {
 	email_ = email; 
 }
-
-
-
 void Users::CheckBooks(string checkOutString)
 {
     checkOut_ = checkOutString;
 }
+void Users::AppendToUsersFile()
+{
+    ofstream outStream;
+    outStream.open(usersFileList_,ios_base::app);
+    cout << endl;
+    outStream << firstName_ << ", "<< lastName_ << ", " << ID_ << ", " << email_ << ", " << checkOut_;
+}
 
-
-
+void Users::setCheckOut(string checkout)
+{
+    checkOut_ = checkout;
+}
 
 
 

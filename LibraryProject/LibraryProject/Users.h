@@ -29,7 +29,7 @@ public:
 	void LogOn(); 
     void CheckBooks(string booksList);
 	void AlreadyCheckedOut();
-	
+        void AppendToUsersFile(); 	
 	string GetUserName();
     //I think we should have both first and last
 	string GetFirstName();
@@ -41,6 +41,7 @@ public:
 	void setFirstName(string firstName); 
 	void setLastName(string lastName); 
 	void setID(string ID);
-	void setEmail(string email);  
+	void setEmail(string email);
+    void setCheckOut(string checkout);
 };
 #endif /* Users_h */
